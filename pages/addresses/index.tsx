@@ -102,7 +102,7 @@ export default function AddressList() {
                     <Text fontWeight={`bold`}>Deliver to</Text>
                 </Flex>
                 <Flex flexGrow={1} alignItems='center' flexDir={'column'}>
-                    <form>
+                    <form style={{ width: '100%' }}>
                         <RadioGroup value={formik.values.selectedAddress}>
                             {shopifyAddresses?.length ? shopifyAddresses.map((address, index) => {
                                 return (
