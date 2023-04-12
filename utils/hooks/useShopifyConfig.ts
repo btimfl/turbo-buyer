@@ -7,6 +7,16 @@ import {
 export default function useShopifyConfig() {
   const [config, setConfig] = useState<ShopifyConfig>(INIT_SHOPIFY_CONFIG)
 
+  const sanitiseAddress = (address: any) => {
+    return {
+      ...address,
+      address_line1: address.address1,
+      address_line2: address.address2,
+      state: address.province,
+      pin_code: address.zip,
+    }
+  }
+
   useEffect(() => {
     const handler = (message: MessageEvent) => {
       if (
@@ -25,7 +35,7 @@ export default function useShopifyConfig() {
           clientLogo: message.data.brandLogoUrl,
           requireOtp: message.data.requireOtp,
           phone: INIT_SHOPIFY_CONFIG.phone,
-          addresses: INIT_SHOPIFY_CONFIG.addresses,
+          addresses: INIT_SHOPIFY_CONFIG.addresses.map(sanitiseAddress),
         })
       }
     }

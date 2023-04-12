@@ -3,16 +3,17 @@ import { Box, Button, Text, Radio, RadioGroup, Flex, useDisclosure, Modal, Modal
 import styles from './addresses.module.scss';
 import AddressCard from "../../components/AddressCard/AddressCard";
 import { useRouter } from "next/router";
-import { useContext, useEffect} from "react";
+import { useContext, useEffect, useState} from "react";
 import { useFormik } from "formik";
 import PageFooter from "../../components/PageFooter/PageFooter";
 import { UserContext } from "../../utils/providers/UserProvider";
 import { ShopifyConfigContext } from "../../utils/providers/ShopifyConfigProvider";
-import { FaChevronRight } from "react-icons/fa";
+import { FaChevronDown, FaChevronRight } from "react-icons/fa";
 
 export default function AddressList() {
     const { phone, addresses, setAddresses } = useContext(UserContext)
     const { addresses: shopifyAddresses } = useContext(ShopifyConfigContext)
+    const [selectedAddress, setSelectedAddress] = useState<any>(null);
     const toast = useToast()
     const router = useRouter()
     
@@ -32,7 +33,11 @@ export default function AddressList() {
     })
 
     useEffect(() => {
-        if (formik.values.selectedAddress) onOpen()
+        if (formik.values.selectedAddress) {
+            if(shopifyAddresses?.length && +formik.values.selectedAddress < shopifyAddresses?.length) setSelectedAddress(shopifyAddresses[+formik.values.selectedAddress]);
+            else setSelectedAddress(addresses?.[+formik.values.selectedAddress - shopifyAddresses?.length ?? 0])
+            onOpen()
+        }
     }, [formik.values.selectedAddress])
 
     const ConfirmationModal = () => {
@@ -47,11 +52,11 @@ export default function AddressList() {
                     <Flex flexDir="row" w="100%" align="flex-start">
                     <Box flexGrow={1}>
                         <Text>Deliver to the following address:</Text>
-                        <Text as="p" fontWeight="bold">{(addresses !== null ? addresses[+formik.values.selectedAddress] : shopifyAddresses[+formik.values.selectedAddress])?.name.trim()},</Text>
-                        <Text fontSize="sm">{(addresses !== null ? addresses[+formik.values.selectedAddress] : shopifyAddresses[+formik.values.selectedAddress])?.address_line1}</Text>
-                        <Text fontSize="sm" >{(addresses !== null ? addresses[+formik.values.selectedAddress] : shopifyAddresses[+formik.values.selectedAddress])?.address_line2}</Text>
-                        <Text fontSize="sm">{(addresses !== null ? addresses[+formik.values.selectedAddress] : shopifyAddresses[+formik.values.selectedAddress])?.pin_code || ''}</Text>
-                        {(addresses !== null ? addresses[+formik.values.selectedAddress] : shopifyAddresses[+formik.values.selectedAddress])?.mobile ? <Text mt={2} fontSize="xs">Mobile: +91 {(addresses !== null ? addresses[+formik.values.selectedAddress] : shopifyAddresses[+formik.values.selectedAddress])?.mobile}</Text> : null}
+                        <Text as="p" fontWeight="bold">{selectedAddress?.['name'].trim()},</Text>
+                        <Text fontSize="sm">{selectedAddress?.['address_line1']}</Text>
+                        <Text fontSize="sm" >{selectedAddress?.['address_line2']}</Text>
+                        <Text fontSize="sm">{selectedAddress?.['pin_code'] || ''}</Text>
+                        {selectedAddress?.['mobile'] ? <Text mt={2} fontSize="xs">Mobile: +91 {selectedAddress?.['mobile']}</Text> : null}
                     </Box>
                 </Flex> : <></>}
                     </ModalBody>
@@ -61,7 +66,7 @@ export default function AddressList() {
                         <Button colorScheme='blue' onClick={() => {
                             onClose();
                             window?.top?.postMessage(
-                                { type: "TURBO_ROUTE", address: JSON.stringify({ "name": "Raghav", "address_line1": "New Address Line 1", "address_line2": "New Address Line 2", "city": "New Delhi", "district": "", "state": "Delhi", "country": "IN", "pin_code": "110034" })}, '*');
+                                { type: "TURBO_ROUTE", address: JSON.stringify(selectedAddress)}, '*');
                         }} size="sm">
                             Proceed
                         </Button>
@@ -71,31 +76,35 @@ export default function AddressList() {
         )
     }
 
-    if(!addresses || !addresses.length) return (
-        <Flex className={styles.container} flexDir={`column`} h={'calc(100dvh - 3rem'} justifyContent={'space-between'}>
-            <Box>
-                <Flex className={styles.section} ps={4} pe={4} pt={2} pb={2} align={`center`} mb={2}>
-                    <Box className={`${styles.sectionContent}`} flexGrow={1}>
-                        <Text fontWeight={`bold`}>Your number <Text as="span" ms={4} fontWeight={`bold`}>{phone}</Text></Text>
-                    </Box>
-                    <Box onClick={() => {
-                        router.replace('/profile')
-                        return
-                    }} cursor={'pointer'}>
-                        <Text><FaChevronRight /></Text>
-                    </Box>
-                </Flex>
-            </Box>  
+    if((!addresses || !addresses?.length) && (!shopifyAddresses || !shopifyAddresses?.length)) return (
+        <Center h={'70dvh'}>
+                <Text>No Addresses Found!</Text>
+        </Center> 
+    )
 
-            { shopifyAddresses?.length ? <Flex className={styles.pageTitle} mb={2} ps={4} pe={4}>
-                    <Text fontWeight={`bold`}>Deliver to</Text>
-            </Flex> : <></>}
-
-            <Box flexGrow={1}>
+    return (
+        <>
+            <Flex className={styles.container} flexDir={`column`}>
                 <Box>
+                    <Flex className={styles.section} ps={4} pe={4} pt={2} pb={2} align={`center`} mb={2}>
+                        <Box className={`${styles.sectionContent}`} flexGrow={1}>
+                            <Text fontWeight={`bold`}>Your number <Text as="span" ms={4} fontWeight={`bold`}>{phone}</Text></Text>
+                        </Box>
+                        <Box onClick={() => {
+                            router.replace('/profile')
+                            return
+                        }} cursor={'pointer'}>
+                            <Text><FaChevronRight /></Text>
+                        </Box>
+                    </Flex>
+                </Box>
+                <Flex className={styles.pageTitle} mb={2} ps={4} pe={4}>
+                    <Text fontWeight={`bold`}>Deliver to</Text>
+                </Flex>
+                <Flex flexGrow={1} alignItems='center' flexDir={'column'}>
                     <form>
                         <RadioGroup value={formik.values.selectedAddress}>
-                            {shopifyAddresses?.length ? shopifyAddresses?.map((address, index) => {
+                            {shopifyAddresses?.length ? shopifyAddresses.map((address, index) => {
                                 return (
                                     <Box mb={2} key={index} p={4} className={`${styles.card} ${(address.address_id === formik.values.selectedAddress) ? styles.selectedCard : ''}`}>
                                         <Radio colorScheme='green' {...formik.getFieldProps('selectedAddress')} value={index.toString()} className={`${styles.radio}`}>
@@ -104,22 +113,23 @@ export default function AddressList() {
                                     </Box>
                                 );
                             }) : null}
+                            {addresses?.length ? addresses.map((address, index) => {
+                                return (
+                                    <Box mb={2} key={index} p={4} className={`${styles.card} ${(address.address_id === formik.values.selectedAddress) ? styles.selectedCard : ''}`}>
+                                        <Radio colorScheme='green' {...formik.getFieldProps('selectedAddress')} value={(index + shopifyAddresses?.length ?? 0).toString()} className={`${styles.radio}`}>
+                                            <AddressCard key={index} index={index} isInForm={true} address={address} mobile={address.mobile} selected={(index + shopifyAddresses?.length ?? 0) === +formik.values.selectedAddress} />
+                                        </Radio>
+                                    </Box>
+                                );
+                            }) : null}
                         </RadioGroup>
                     </form>
-                </Box>
-            </Box>
 
-            {(!shopifyAddresses || !shopifyAddresses.length) ? <Center h={'70dvh'}>
-                <Text>No Addresses Found!</Text>
-            </Center> : <></>}
-
-            <Box className={styles.pageFooter}>
-                { addresses === null ? (
-                    <Box py={1} px={4}>
-                        <Button onClick={() => {
+                    {addresses === null ? (
+                        <Flex alignItems='center' gap={1} color={'var(--turbo-colors-link)'} cursor='pointer' onClick={() => {
                             // Mock a call to fetch addresses
-
-                            if(false) {
+    
+                            if(true) {
                                 toast({
                                     title: `Found 1 new address!`,
                                     status: 'success',
@@ -144,62 +154,12 @@ export default function AddressList() {
                             });
                             setAddresses([])
                             handleRouteToParent()
-                        }} fontSize={`sm`} variant={`outline`} type="submit" w={`100%`} colorScheme={`black`} textTransform={`uppercase`}>
-                            Fetch More Addresses
-                        </Button>
-                </Box>
-                ): <></>}
-
-                <Box py={1} px={4}>
-                {/* <Link"> */}
-                    <Button onClick={handleRouteToParent} fontSize={`sm`} variant={`outline`} type="submit" w={`100%`} colorScheme={`black`} textTransform={`uppercase`}>
-                        Add new Address
-                    </Button>
-                {/* </Link> */}
-                    <PageFooter />
-                </Box>
-            </Box>
-
-            <ConfirmationModal />
-        </Flex>
-    )
-
-    return (
-        <>
-            <Flex className={styles.container} flexDir={`column`}>
-                <Box>
-                    <Flex className={styles.section} ps={4} pe={4} pt={2} pb={2} align={`center`} mb={2}>
-                        <Box className={`${styles.sectionContent}`} flexGrow={1}>
-                            <Text fontWeight={`bold`}>Your number <Text as="span" ms={4} fontWeight={`bold`}>{phone}</Text></Text>
-                        </Box>
-                        <Box onClick={() => {
-                            router.replace('/profile')
-                            return
-                        }} cursor={'pointer'}>
-                            <Text><FaChevronRight /></Text>
-                        </Box>
-                    </Flex>
-                </Box>
-                <Flex className={styles.pageTitle} mb={2} ps={4} pe={4}>
-                    <Text fontWeight={`bold`}>Deliver to</Text>
+                        }}>
+                            <FaChevronDown />
+                            <Text as='span'>Load More</Text>
+                        </Flex>
+                    ): <></>}
                 </Flex>
-                <Box flexGrow={1}>
-                    <Box>
-                        <form>
-                            <RadioGroup value={formik.values.selectedAddress}>
-                                {addresses.length ? addresses.map((address, index) => {
-                                    return (
-                                        <Box mb={2} key={index} p={4} className={`${styles.card} ${(address.address_id === formik.values.selectedAddress) ? styles.selectedCard : ''}`}>
-                                            <Radio colorScheme='green' {...formik.getFieldProps('selectedAddress')} value={index.toString()} className={`${styles.radio}`}>
-                                                <AddressCard key={index} index={index} isInForm={true} address={address} mobile={address.mobile} selected={index === +formik.values.selectedAddress} />
-                                            </Radio>
-                                        </Box>
-                                    );
-                                }) : null}
-                            </RadioGroup>
-                        </form>
-                    </Box>
-                </Box>
 
                 <Box py={2} px={4} className={styles.pageFooter}>
                     {/* <Link"> */}
