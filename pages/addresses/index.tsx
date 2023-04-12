@@ -8,7 +8,7 @@ import { useFormik } from "formik";
 import PageFooter from "../../components/PageFooter/PageFooter";
 import { UserContext } from "../../utils/providers/UserProvider";
 import { ShopifyConfigContext } from "../../utils/providers/ShopifyConfigProvider";
-import { FaChevronRight } from "react-icons/fa";
+import { FaChevronDown, FaChevronRight } from "react-icons/fa";
 
 export default function AddressList() {
     const { phone, addresses, setAddresses } = useContext(UserContext)
@@ -92,7 +92,7 @@ export default function AddressList() {
             </Flex> : <></>}
 
             <Box flexGrow={1}>
-                <Box>
+                <Flex direction={"column"} alignItems='center'>
                     <form>
                         <RadioGroup value={formik.values.selectedAddress}>
                             {shopifyAddresses?.length ? shopifyAddresses?.map((address, index) => {
@@ -106,20 +106,11 @@ export default function AddressList() {
                             }) : null}
                         </RadioGroup>
                     </form>
-                </Box>
-            </Box>
-
-            {(!shopifyAddresses || !shopifyAddresses.length) ? <Center h={'70dvh'}>
-                <Text>No Addresses Found!</Text>
-            </Center> : <></>}
-
-            <Box className={styles.pageFooter}>
-                { addresses === null ? (
-                    <Box py={1} px={4}>
-                        <Button onClick={() => {
+                    {addresses === null ? (
+                        <Flex alignItems='center' gap={1} color={'var(--turbo-colors-link)'} cursor='pointer' onClick={() => {
                             // Mock a call to fetch addresses
-
-                            if(false) {
+    
+                            if(true) {
                                 toast({
                                     title: `Found 1 new address!`,
                                     status: 'success',
@@ -144,11 +135,26 @@ export default function AddressList() {
                             });
                             setAddresses([])
                             handleRouteToParent()
-                        }} fontSize={`sm`} variant={`outline`} type="submit" w={`100%`} colorScheme={`black`} textTransform={`uppercase`}>
+                        }}>
+                            <FaChevronDown />
+                            <Text as='span'>Load More</Text>
+                        </Flex>
+                    ): <></>}
+                </Flex>
+            </Box>
+
+            {(!shopifyAddresses || !shopifyAddresses.length) ? <Center h={'70dvh'}>
+                <Text>No Addresses Found!</Text>
+            </Center> : <></>}
+
+            <Box className={styles.pageFooter}>
+                {/* { addresses === null ? (
+                    <Box py={1} px={4}>
+                        <Button  fontSize={`sm`} variant={`outline`} type="submit" w={`100%`} colorScheme={`black`} textTransform={`uppercase`}>
                             Fetch More Addresses
                         </Button>
                 </Box>
-                ): <></>}
+                ): <></>} */}
 
                 <Box py={1} px={4}>
                 {/* <Link"> */}
