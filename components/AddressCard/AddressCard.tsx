@@ -54,7 +54,7 @@ export default function AddressCard({ address, mobile, selected, isInForm, index
                     }
                     <Box mt={2}>
                         <Text mb={2} fontSize={`sm`}>{`${address.address_line1 + ', ' + (address.address_line2 ? address.address_line2 + ', ' : '') + address.city + ', ' + (address.district ? address.district + ', ' : '') + address.state + ' - ' + address.pin_code}`}</Text>
-                        <Text fontSize={`xs`}>Mobile: {`${phone}`}</Text>
+                        {/* <Text fontSize={`xs`}>Mobile: {`${phone}`}</Text> */}
                     </Box>
                 </Flex>
             </Flex>
