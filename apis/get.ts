@@ -29,6 +29,11 @@ export async function getPostalAddress(pincode: string): Promise<any> {
     return res.json();
 }
 
+export async function getTurboAddressCount(phone: string): Promise<Response> {
+    const res = await gateway(`http://localhost:4001/turbo/count?mobile=${phone}`, 'GET');
+    return res;
+}
+
 /********************************************** PAYMENT ***********************************************************/
 export async function getOrderById(id: string): Promise<Response> {
     const res = await gateway(`${baseUrl}/v1/order/${id}`, `GET`);

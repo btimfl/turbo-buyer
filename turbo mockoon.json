@@ -1,21 +1,21 @@
 {
-  "uuid": "00abf6ea-ac79-41fa-8906-728e3983c7b7",
+  "uuid": "143b0e90-d6b4-4091-b2ec-ca962712af17",
   "lastMigration": 24,
   "name": "Turbo",
   "endpointPrefix": "",
-  "latency": 1000,
-  "port": 4000,
+  "latency": 0,
+  "port": 4001,
   "hostname": "0.0.0.0",
   "routes": [
     {
-      "uuid": "ba0f5ccb-9ad3-444b-b621-de923ab38ab7",
+      "uuid": "ac3adb02-e9a1-4392-99a6-6033dfe23433",
       "documentation": "Verify Profile",
       "method": "post",
       "endpoint": "auth/v1/buyer/verify",
       "responses": [
         {
-          "uuid": "92d6ef15-0113-4b4c-a39b-2ab2e61bc4ab",
-          "body": "{\n  \"is_guest_user\": false,\n  \"otp_request_id\": \"ef5be285-0838-444b-a5d7-02e311cec37d\"\n",
+          "uuid": "9912ee6d-c08c-4c6c-92a5-2e93d9c96447",
+          "body": "{\n  \"is_guest_user\": false,\n  \"otp_request_id\": \"ef5be285-0838-444b-a5d7-02e311cec37d\"\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "NOT_GUEST_USER",
@@ -31,7 +31,7 @@
           "default": true
         },
         {
-          "uuid": "6f19d89c-fd0c-4193-ad3f-59bd345127bb",
+          "uuid": "3d99eb31-fb40-4b9c-9531-6906394db36a",
           "body": "{\n  \"is_guest_user\": true,\n  \"token\": \"eyJhbGciOiJIUzUxMiJ9.eyJpc19ndWVzdF91c2VyIjpmYWxzZSwic3ViIjoiOTAwMzI5MDMzNiIsImlhdCI6MTY3MDM5Njg2OCwiZXhwIjoxNjcxODY4MDk3fQ.5ISaDr3enSAYjQfdmISrn8qFBLv_Bfa-AtXXB6aSpzRL7rxrvQh8CLogNUGXwRJbG198aMnsDBSY-c8pDwOx9Q\"\n}",
           "latency": 0,
           "statusCode": 200,
@@ -48,7 +48,7 @@
           "default": false
         },
         {
-          "uuid": "e40c6109-264f-4fd4-84f8-dbe9f2d93a4d",
+          "uuid": "aae7ef36-f194-4ed5-ab36-d5beb3f46a61",
           "body": "{\n  \"error\": \"UC_R01\",\n  \"message\": \"Server time out\"\n}",
           "latency": 0,
           "statusCode": 400,
@@ -69,13 +69,13 @@
       "responseMode": null
     },
     {
-      "uuid": "937c7c52-afe0-44e3-91f9-5551228a39d0",
+      "uuid": "3bc88332-895c-4281-a1d7-44d4ba4800a7",
       "documentation": "Resend OTP",
       "method": "post",
       "endpoint": "auth/v1/otp/send",
       "responses": [
         {
-          "uuid": "ebbbc1c2-272e-4df4-bfa0-79e0d4c7d1e1",
+          "uuid": "da88dd7b-c3d3-4c68-b19c-43e458c1eae4",
           "body": "{\n  \"otp_request_id\": \"ef5be285-0838-444b-a5d7-02e311cec37d\"\n}",
           "latency": 0,
           "statusCode": 200,
@@ -100,7 +100,7 @@
           "default": true
         },
         {
-          "uuid": "9a82191c-8a2c-485c-afcb-81ce0da4433c",
+          "uuid": "3f53348a-a91b-47c9-af85-74b8abe825a1",
           "body": "{\n  \"error\": \"UC_R01\",\n  \"message\": \"Server time out\"\n}",
           "latency": 0,
           "statusCode": 400,
@@ -129,13 +129,13 @@
       "responseMode": null
     },
     {
-      "uuid": "adef8e14-bb32-4b20-bf06-3b289177d770",
+      "uuid": "9e04ede5-0425-452f-9f9d-f466bb2e492f",
       "documentation": "Resend OTP",
       "method": "post",
       "endpoint": "auth/v1/otp/resend",
       "responses": [
         {
-          "uuid": "972c8ff4-f2d4-4214-891a-8ea71a5d3d1c",
+          "uuid": "caa45e6d-5996-4b83-bf9e-ecd2876951b2",
           "body": "{\n  \"otp_request_id\": \"ef5be285-0838-444b-a5d7-02e311cec37d\"\n}",
           "latency": 0,
           "statusCode": 200,
@@ -160,7 +160,7 @@
           "default": true
         },
         {
-          "uuid": "f672fdbb-4f6c-4a5a-9dc0-e73a388bc4d7",
+          "uuid": "9d17823d-434b-4dbd-9bea-370e126a6812",
           "body": "{\n  \"error\": \"UC_R01\",\n  \"message\": \"Server time out\"\n}",
           "latency": 0,
           "statusCode": 400,
@@ -189,13 +189,13 @@
       "responseMode": null
     },
     {
-      "uuid": "bab301d5-15ef-4365-96cf-2849704d28e7",
+      "uuid": "5a76f251-0833-400d-9a43-787d91e1a28d",
       "documentation": "Verify OTP",
       "method": "post",
       "endpoint": "auth/v1/otp/verify",
       "responses": [
         {
-          "uuid": "0df91dbe-cbdf-4580-a050-c455d70f0620",
+          "uuid": "bf065de9-a8ca-4dbf-be60-4b3e79286b8f",
           "body": "{\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaWQiOjI3MTMwODQ3LCJtb2JpbGUiOiI4Mjc5NzAxMjY3IiwiaWF0IjoxNjY3Mjg3Njg2LCJleHAiOjE2OTg4MjM2ODZ9.eMM0mLxt_MN_X261qrw2DWQylG_dUY2Zic9t8p8AL2o\"\n}",
           "latency": 0,
           "statusCode": 200,
@@ -205,29 +205,14 @@
           "filePath": "",
           "databucketID": "",
           "sendFileAsBody": false,
-          "rules": [
-            {
-              "target": "query",
-              "modifier": "otp_request_id",
-              "value": "ef5be285-0838-444b-a5d7-02e311cec37d",
-              "invert": false,
-              "operator": "equals"
-            },
-            {
-              "target": "query",
-              "modifier": "otp",
-              "value": "1234",
-              "invert": false,
-              "operator": "equals"
-            }
-          ],
+          "rules": [],
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": true
         },
         {
-          "uuid": "d0353e75-3ccf-4739-9766-814f19369a93",
+          "uuid": "5e9bf3fd-6c68-4a62-8b6d-95d86d3aa948",
           "body": "{\n  \"token\": \"\"\n}",
           "latency": 0,
           "statusCode": 200,
@@ -237,29 +222,14 @@
           "filePath": "",
           "databucketID": "",
           "sendFileAsBody": false,
-          "rules": [
-            {
-              "target": "query",
-              "modifier": "otp_request_id",
-              "value": "ef5be285-0838-444b-a5d7-02e311cec37d",
-              "invert": false,
-              "operator": "equals"
-            },
-            {
-              "target": "query",
-              "modifier": "otp",
-              "value": "1234",
-              "invert": true,
-              "operator": "equals"
-            }
-          ],
+          "rules": [],
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": false
         },
         {
-          "uuid": "57b5acb8-1a65-4283-9f5d-461e1532730b",
+          "uuid": "113f4517-377b-4a2f-b540-a86b820c98bc",
           "body": "{\n  \"error\": \"UC_R01\",\n  \"message\": \"Server time out\"\n}",
           "latency": 0,
           "statusCode": 400,
@@ -269,15 +239,7 @@
           "filePath": "",
           "databucketID": "",
           "sendFileAsBody": false,
-          "rules": [
-            {
-              "target": "query",
-              "modifier": "otp_request_id",
-              "value": "81715055ef5be285-0838-444b-a5d7-02e311cec37d72",
-              "invert": true,
-              "operator": "equals"
-            }
-          ],
+          "rules": [],
           "rulesOperator": "OR",
           "disableTemplating": false,
           "fallbackTo404": false,
@@ -288,14 +250,14 @@
       "responseMode": null
     },
     {
-      "uuid": "05ae72d7-d9b4-484d-a14a-f37a234c124b",
+      "uuid": "09759a66-5b31-4941-b800-33cd40b32af8",
       "documentation": "Ger Profile",
       "method": "get",
       "endpoint": "buyer/v1/profile",
       "responses": [
         {
-          "uuid": "878e6c5f-116b-406f-b0bb-b302b2a2b4f9",
-          "body": "{\n  \"mobile\": \"8171505570\",\n  \"turbo_address_list\": [\n    {\n      \"address_id\": \"1\",\n      \"name\": \"Utkarsh Saxena\",\n      \"address_line1\": \"G-342 A, G Block\",\n      \"address_line_2\": \"Sector 57, Near Hong Kong Bazaar\",\n      \"city\": \"Gurugram\",\n      \"district\": \"Gurugram\",\n      \"state\": \"Harayana\",\n      \"country\": \"India\",\n      \"pincode\": \"122001\",\n      \"address_type\": \"Home\",\n      \"selected\": true\n    }\n  ],\n  \"unifill_address_list\": [\n    {\n      \"address_id\": \"1\",\n      \"name\": \"Raghav Kanwal\",\n      \"address_line1\": \"G-342 A, G Block\",\n      \"address_line_2\": \"Sector 57, Near Hong Kong Bazaar\",\n      \"city\": \"Gurugram\",\n      \"district\": \"Gurugram\",\n      \"state\": \"Harayana\",\n      \"country\": \"India\",\n      \"pincode\": \"122001\",\n      \"address_type\": \"Home\",\n      \"selected\": false\n    }\n  ]\n}",
+          "uuid": "877d571d-c037-43ab-835c-deaaf2776d42",
+          "body": "{\n  \"mobile\": \"8171505570\",\n  \"turbo_address_list\": [\n    {\n      \"address_id\": \"1\",\n      \"name\": \"Utkarsh Saxena\",\n      \"address_line_1\": \"G-342 A, G Block\",\n      \"address_line_2\": \"Sector 57, Near Hong Kong Bazaar\",\n      \"city\": \"Gurugram\",\n      \"district\": \"Gurugram\",\n      \"state\": \"Harayana\",\n      \"country\": \"India\",\n      \"pincode\": \"122001\",\n      \"address_type\": \"Home\",\n      \"selected\": true\n    }\n  ],\n  \"unifill_address_list\": [\n    {\n      \"address_id\": \"1\",\n      \"name\": \"Raghav Kanwal\",\n      \"address_line_1\": \"G-342 A, G Block\",\n      \"address_line_2\": \"Sector 57, Near Hong Kong Bazaar\",\n      \"city\": \"Gurugram\",\n      \"district\": \"Gurugram\",\n      \"state\": \"Harayana\",\n      \"country\": \"India\",\n      \"pincode\": \"122001\",\n      \"address_type\": \"Home\",\n      \"selected\": false\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Both Have Address",
@@ -311,7 +273,7 @@
           "default": true
         },
         {
-          "uuid": "848ace0f-1653-4fcb-8868-a872f374676f",
+          "uuid": "e96c9a2c-83f2-48ed-95e2-15416f2cc54b",
           "body": "{\n  \"mobile\": \"8171505571\",\n  \"turbo_address_list\": [],\n  \"unifill_address_list\": []\n}",
           "latency": 0,
           "statusCode": 200,
@@ -328,8 +290,8 @@
           "default": false
         },
         {
-          "uuid": "bb4d4bcd-aeaa-4955-a294-186896680b38",
-          "body": "{\n  \"mobile\": \"8171505572\",\n  \"turbo_address_list\": [],\n  \"unifill_address_list\": [\n    {\n      \"address_id\": \"1\",\n      \"name\": \"Raghav Kanwal\",\n      \"address_line1\": \"G-342 A, G Block\",\n      \"address_line_2\": \"Sector 57, Near Hong Kong Bazaar\",\n      \"city\": \"Gurugram\",\n      \"district\": \"Gurugram\",\n      \"state\": \"Harayana\",\n      \"country\": \"India\",\n      \"pincode\": \"122001\",\n      \"address_type\": \"Home\",\n      \"selected\": true\n    }\n  ]\n}",
+          "uuid": "820fe3d6-02a6-4471-88e2-7e51d6148453",
+          "body": "{\n  \"mobile\": \"8171505572\",\n  \"turbo_address_list\": [],\n  \"unifill_address_list\": [\n    {\n      \"address_id\": \"1\",\n      \"name\": \"Raghav Kanwal\",\n      \"address_line_1\": \"G-342 A, G Block\",\n      \"address_line_2\": \"Sector 57, Near Hong Kong Bazaar\",\n      \"city\": \"Gurugram\",\n      \"district\": \"Gurugram\",\n      \"state\": \"Harayana\",\n      \"country\": \"India\",\n      \"pincode\": \"122001\",\n      \"address_type\": \"Home\",\n      \"selected\": true\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Turbo Empty",
@@ -345,8 +307,8 @@
           "default": false
         },
         {
-          "uuid": "8ddf0761-b073-41d6-97d8-9ac7f01c72bc",
-          "body": "{\n  \"mobile\": \"8171505573\",\n  \"turbo_address_list\": [\n    {\n      \"address_id\": \"1\",\n      \"name\": \"Utkarsh Saxena\",\n      \"address_line1\": \"G-342 A, G Block\",\n      \"address_line_2\": \"Sector 57, Near Hong Kong Bazaar\",\n      \"city\": \"Gurugram\",\n      \"district\": \"Gurugram\",\n      \"state\": \"Harayana\",\n      \"country\": \"India\",\n      \"pincode\": \"122001\",\n      \"address_type\": \"Home\",\n      \"selected\": true\n    }\n  ],\n  \"unifill_address_list\": []\n}",
+          "uuid": "3d34d0ac-2712-47ba-86db-c9052a848b1f",
+          "body": "{\n  \"mobile\": \"8171505573\",\n  \"turbo_address_list\": [\n    {\n      \"address_id\": \"1\",\n      \"name\": \"Utkarsh Saxena\",\n      \"address_line_1\": \"G-342 A, G Block\",\n      \"address_line_2\": \"Sector 57, Near Hong Kong Bazaar\",\n      \"city\": \"Gurugram\",\n      \"district\": \"Gurugram\",\n      \"state\": \"Harayana\",\n      \"country\": \"India\",\n      \"pincode\": \"122001\",\n      \"address_type\": \"Home\",\n      \"selected\": true\n    }\n  ],\n  \"unifill_address_list\": []\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Unifill Empty",
@@ -366,14 +328,14 @@
       "responseMode": null
     },
     {
-      "uuid": "1a0f3710-6657-4c9c-b5ce-953827524b55",
-      "documentation": "",
+      "uuid": "6586581d-1af3-4c85-8f2d-053011abf79b",
+      "documentation": "Get Turbo Address Count",
       "method": "get",
-      "endpoint": "",
+      "endpoint": "turbo/count",
       "responses": [
         {
-          "uuid": "6d35a241-a9a5-4a78-8a61-822d19171992",
-          "body": "{}",
+          "uuid": "0f17ce40-8ca6-4852-946f-88ae382756e2",
+          "body": "{\n  \"successful\": true,\n  \"turbo-address-count\": 0\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -422,10 +384,6 @@
     {
       "key": "Access-Control-Allow-Headers",
       "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
-    },
-    {
-      "key": "APP-KEY",
-      "value": "#$%^SK&SNLSH*^%SF"
     }
   ],
   "proxyReqHeaders": [

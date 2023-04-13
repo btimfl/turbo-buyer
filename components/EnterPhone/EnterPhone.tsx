@@ -21,6 +21,7 @@ import PageFooter from '../PageFooter/PageFooter'
 import * as Yup from 'yup'
 import styles from './EnterPhone.module.scss'
 import { UserContext } from '../../utils/providers/UserProvider'
+import { getTurboAddressCount } from '../../apis/get'
 
 export default function EnterPhone() {
   const { phone, setPhone, setAddresses } = useContext(UserContext)
@@ -55,6 +56,40 @@ export default function EnterPhone() {
             return
           }
 
+          // User has used a new phone number, clear details of previous number
+          setPhone(values.phone)
+          setAddresses([])
+          localStorage?.setItem('phone', values.phone)
+          localStorage?.removeItem('addresses')
+          localStorage?.removeItem('verified')
+
+          const countRes = await getTurboAddressCount(values.phone)
+          if (!countRes.ok) {
+            showErrorToast(toast, {
+              error_code: '500',
+              message:
+                'An internal server error occurred. Please try again later.',
+            })
+            return
+          }
+
+          const countData = await countRes.json()
+          if (
+            !countData?.['turbo-address-count'] ||
+            countData?.['turbo-address-count'] === 0
+          ) {
+            window?.top?.postMessage(
+              {
+                type: 'TURBO_ROUTE',
+                address: JSON.stringify({
+                  mobile: phone,
+                }),
+              },
+              '*'
+            )
+            return
+          }
+
           const res = await sendOTP(values.phone)
           const data = await res.json()
 
@@ -63,12 +98,6 @@ export default function EnterPhone() {
             return
           }
 
-          // User has used a new phone number, clear details of previous number
-          setPhone(values.phone)
-          setAddresses([])
-          localStorage?.setItem('phone', values.phone)
-          localStorage?.removeItem('addresses')
-          localStorage?.removeItem('verified')
           router.push(
             {
               pathname: '/verify',
