@@ -78,9 +78,24 @@ export default function AddressList() {
     }
 
     if((!addresses || !addresses?.length) && (!shopifyAddresses || !shopifyAddresses?.length)) return (
-        <Center h={'70dvh'}>
+        <Flex className={styles.container} flexDir={`column`}>
+            <Box>
+                <Flex className={styles.section} ps={4} pe={4} pt={2} pb={2} align={`center`} mb={2}>
+                    <Box className={`${styles.sectionContent}`} flexGrow={1}>
+                        <Text fontWeight={`bold`}>Your number <Text as="span" ms={4} fontWeight={`bold`}>{phone}</Text></Text>
+                    </Box>
+                    <Box onClick={() => {
+                        router.replace('/profile')
+                        return
+                    }} cursor={'pointer'}>
+                        <Text><FaChevronRight /></Text>
+                    </Box>
+                </Flex>
+            </Box>
+            <Center h={'70dvh'}>
                 <Text>No Addresses Found!</Text>
-        </Center> 
+            </Center> 
+        </Flex>
     )
 
     return (
