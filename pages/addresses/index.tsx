@@ -9,6 +9,7 @@ import PageFooter from "../../components/PageFooter/PageFooter";
 import { UserContext } from "../../utils/providers/UserProvider";
 import { ShopifyConfigContext } from "../../utils/providers/ShopifyConfigProvider";
 import { FaChevronDown, FaChevronRight } from "react-icons/fa";
+import LocalStorageHandler from "../../utils/LocalStorageHandler";
 
 export default function AddressList() {
     const { phone, addresses, setAddresses } = useContext(UserContext)
@@ -140,7 +141,8 @@ export default function AddressList() {
                                 });
                                 const a = [ { "name": "Raghav", "address_line1": "New Address Line 1", "address_line2": "New Address Line 2", "city": "New Delhi", "district": "", "state": "Delhi", "country": "IN", "pin_code": "110034" } ]
                                 setAddresses(a)
-                                localStorage?.setItem('addresses', encodeURIComponent(JSON.stringify(a)))
+                                LocalStorageHandler.addTurboAddresses(encodeURIComponent(JSON.stringify(a)))
+                                // localStorage?.setItem('addresses', encodeURIComponent(JSON.stringify(a)))
                                 return
                             }
                             

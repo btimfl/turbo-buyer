@@ -22,6 +22,7 @@ import * as Yup from 'yup'
 import styles from './EnterPhone.module.scss'
 import { UserContext } from '../../utils/providers/UserProvider'
 import { getTurboAddressCount } from '../../apis/get'
+import LocalStorageHandler from '../../utils/LocalStorageHandler'
 
 export default function EnterPhone() {
   const { phone, setPhone, setAddresses } = useContext(UserContext)
@@ -46,12 +47,9 @@ export default function EnterPhone() {
       validateOnBlur={false}
       onSubmit={async (values) => {
         try {
+          const { verified } = LocalStorageHandler.getData()
           // User uses the same number previously verified
-          if (
-            phone &&
-            phone === values.phone &&
-            localStorage?.getItem('verified') === 'true'
-          ) {
+          if (phone && phone === values.phone && verified === 'true') {
             router.push('/addresses')
             return
           }
@@ -59,9 +57,11 @@ export default function EnterPhone() {
           // User has used a new phone number, clear details of previous number
           setPhone(values.phone)
           setAddresses([])
-          localStorage?.setItem('phone', values.phone)
-          localStorage?.removeItem('addresses')
-          localStorage?.removeItem('verified')
+          LocalStorageHandler.markUnverified()
+          LocalStorageHandler.setPhone(values.phone)
+          // localStorage?.setItem('phone', values.phone)
+          // localStorage?.removeItem('addresses')
+          // localStorage?.removeItem('verified')
 
           const countRes = await getTurboAddressCount(values.phone)
           if (!countRes.ok) {

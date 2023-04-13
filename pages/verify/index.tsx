@@ -20,6 +20,7 @@ import useOTPTimer from '../../utils/hooks/useOTPTimer'
 import { getFormDefaultsForOTP } from '../../utils/functions/otp'
 import { UserContext } from '../../utils/providers/UserProvider'
 import styles from './verify.module.scss'
+import LocalStorageHandler from '../../utils/LocalStorageHandler'
 
 export default function EnterOTP() {
   const router = useRouter()
@@ -102,11 +103,14 @@ export default function EnterOTP() {
             if (data.address_list) {
               setIsOtpInvalid(false)
               setAddresses(data.address_list)
-              localStorage?.setItem(
-                'addresses',
+              LocalStorageHandler.markVerified(
                 encodeURIComponent(JSON.stringify(data.address_list))
               )
-              localStorage?.setItem('verified', 'true')
+              // localStorage?.setItem(
+              //   'addresses',
+              //   encodeURIComponent(JSON.stringify(data.address_list))
+              // )
+              // localStorage?.setItem('verified', 'true')
               router.push('/addresses')
             } else {
               setIsOtpInvalid(true)
