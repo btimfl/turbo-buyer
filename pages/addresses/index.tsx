@@ -88,7 +88,7 @@ export default function AddressList() {
                         router.replace('/profile')
                         return
                     }} cursor={'pointer'}>
-                        <Text><FaChevronRight /></Text>
+                        <Flex alignItems={'center'} gap={'0.25rem'} color="var(--turbo-colors-link)">Change<FaChevronRight /></Flex>
                     </Box>
                 </Flex>
             </Box>
@@ -110,7 +110,7 @@ export default function AddressList() {
                             router.replace('/profile')
                             return
                         }} cursor={'pointer'}>
-                            <Text><FaChevronRight /></Text>
+                            <Flex alignItems={'center'} gap={'0.25rem'} color="var(--turbo-colors-link)">Change<FaChevronRight /></Flex>
                         </Box>
                     </Flex>
                 </Box>

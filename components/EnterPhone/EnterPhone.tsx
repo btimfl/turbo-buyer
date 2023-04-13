@@ -212,7 +212,7 @@ export default function EnterPhone() {
                     mb={2}
                   >
                     <Text as='span' fontSize='sm' textTransform={`uppercase`}>
-                      Fetch Addresses
+                      Proceed
                       <ChevronRightIcon ms={2} fontSize={`lg`} />
                     </Text>
                   </Button>
