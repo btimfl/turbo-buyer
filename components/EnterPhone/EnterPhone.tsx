@@ -36,7 +36,7 @@ export default function EnterPhone() {
   return (
     <Formik
       initialValues={{
-        phone: phone ?? '',
+        phone: phone ?? LocalStorageHandler.getData().phone ?? '',
       }}
       validationSchema={Yup.object({
         phone: Yup.string()
@@ -47,10 +47,27 @@ export default function EnterPhone() {
       validateOnBlur={false}
       onSubmit={async (values) => {
         try {
-          const { verified } = LocalStorageHandler.getData()
+          const {
+            phone: _phone,
+            verified,
+            turboAddressCount,
+          } = LocalStorageHandler.getData()
           // User uses the same number previously verified
           if (phone && phone === values.phone && verified === 'true') {
             router.push('/addresses')
+            return
+          }
+
+          if (_phone && _phone == values.phone && turboAddressCount === 0) {
+            window?.top?.postMessage(
+              {
+                type: 'TURBO_ROUTE',
+                address: JSON.stringify({
+                  mobile: phone,
+                }),
+              },
+              '*'
+            )
             return
           }
 
@@ -58,7 +75,6 @@ export default function EnterPhone() {
           setPhone(values.phone)
           setAddresses([])
           LocalStorageHandler.markUnverified()
-          LocalStorageHandler.setPhone(values.phone)
           // localStorage?.setItem('phone', values.phone)
           // localStorage?.removeItem('addresses')
           // localStorage?.removeItem('verified')
@@ -74,6 +90,11 @@ export default function EnterPhone() {
           }
 
           const countData = await countRes.json()
+          LocalStorageHandler.setPhone(
+            values.phone,
+            countData?.['turbo-address-count']
+          )
+
           if (
             !countData?.['turbo-address-count'] ||
             countData?.['turbo-address-count'] === 0
