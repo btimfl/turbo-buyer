@@ -13,12 +13,16 @@ import LocalStorageHandler from "../../utils/LocalStorageHandler";
 
 export default function AddressList() {
     const { phone, addresses, setAddresses } = useContext(UserContext)
-    const { addresses: shopifyAddresses } = useContext(ShopifyConfigContext)
+    const { addresses: shopifyAddresses, } = useContext(ShopifyConfigContext)
     const [selectedAddress, setSelectedAddress] = useState<any>(null);
-    const toast = useToast()
+    const [ isTurboAddressVisible, setIsTurboAddressVisible ] = useState<boolean>(!(shopifyAddresses?.length > 0))
+
     const router = useRouter()
     
     const { isOpen, onClose, onOpen } = useDisclosure();
+
+    const turboAddressCount = localStorage?.getItem('turboAddressCount');
+    const doesTurboAddressExist = turboAddressCount ? +turboAddressCount > 0 : false;
 
     const handleRouteToParent = () => {
         window?.top?.postMessage({ type: "TURBO_ROUTE", address: JSON.stringify({
@@ -82,7 +86,7 @@ export default function AddressList() {
             <Box>
                 <Flex className={styles.section} ps={4} pe={4} pt={2} pb={2} align={`center`} mb={2}>
                     <Box className={`${styles.sectionContent}`} flexGrow={1}>
-                        <Text fontWeight={`bold`}>Your number <Text as="span" ms={4} fontWeight={`bold`}>{phone}</Text></Text>
+                        <Text fontWeight={`bold`}>Your number <Text as="span" ms={4} fontWeight={`bold`}>{phone || 'Unavailable'}</Text></Text>
                     </Box>
                     <Box onClick={() => {
                         router.replace('/profile')
@@ -104,7 +108,7 @@ export default function AddressList() {
                 <Box>
                     <Flex className={styles.section} ps={4} pe={4} pt={2} pb={2} align={`center`} mb={2}>
                         <Box className={`${styles.sectionContent}`} flexGrow={1}>
-                            <Text fontWeight={`bold`}>Your number <Text as="span" ms={4} fontWeight={`bold`}>{phone}</Text></Text>
+                        <Text fontWeight={`bold`}>Your number <Text as="span" ms={4} fontWeight={`bold`}>{phone || 'Unavailable'}</Text></Text>
                         </Box>
                         <Box onClick={() => {
                             router.replace('/profile')
@@ -129,7 +133,7 @@ export default function AddressList() {
                                     </Box>
                                 );
                             }) : null}
-                            {addresses?.length ? addresses.map((address, index) => {
+                            {isTurboAddressVisible ? addresses?.map((address, index) => {
                                 return (
                                     <Box mb={2} key={index} p={4} className={`${styles.card} ${(address.address_id === formik.values.selectedAddress) ? styles.selectedCard : ''}`}>
                                         <Radio colorScheme='green' {...formik.getFieldProps('selectedAddress')} value={(index + shopifyAddresses?.length ?? 0).toString()} className={`${styles.radio}`}>
@@ -141,36 +145,37 @@ export default function AddressList() {
                         </RadioGroup>
                     </form>
 
-                    {addresses === null ? (
+                    {doesTurboAddressExist && !isTurboAddressVisible ? (
                         <Flex alignItems='center' gap={1} color={'var(--turbo-colors-link)'} cursor='pointer' onClick={() => {
-                            // Mock a call to fetch addresses
+                            // // Mock a call to fetch addresses
     
-                            if(true) {
-                                toast({
-                                    title: `Found 1 new address!`,
-                                    status: 'success',
-                                    variant: 'left-accent',
-                                    position: 'top-right',
-                                    duration: 3000,
-                                    isClosable: true,
-                                });
-                                const a = [ { "name": "Raghav", "address_line1": "New Address Line 1", "address_line2": "New Address Line 2", "city": "New Delhi", "district": "", "state": "Delhi", "country": "IN", "pin_code": "110034" } ]
-                                setAddresses(a)
-                                LocalStorageHandler.addTurboAddresses(encodeURIComponent(JSON.stringify(a)))
-                                // localStorage?.setItem('addresses', encodeURIComponent(JSON.stringify(a)))
-                                return
-                            }
+                            // if(true) {
+                            //     // toast({
+                            //     //     title: `Found 1 new address!`,
+                            //     //     status: 'success',
+                            //     //     variant: 'left-accent',
+                            //     //     position: 'top-right',
+                            //     //     duration: 3000,
+                            //     //     isClosable: true,
+                            //     // });
+                            //     const a = [ { "name": "Raghav", "address_line1": "New Address Line 1", "address_line2": "New Address Line 2", "city": "New Delhi", "district": "", "state": "Delhi", "country": "IN", "pin_code": "110034" } ]
+                            //     setAddresses(a)
+                            //     LocalStorageHandler.addTurboAddresses(encodeURIComponent(JSON.stringify(a)))
+                            //     // localStorage?.setItem('addresses', encodeURIComponent(JSON.stringify(a)))
+                            //     return
+                            // }
                             
-                            toast({
-                                title: `No addresses found!`,
-                                status: 'warning',
-                                variant: 'left-accent',
-                                position: 'top-right',
-                                duration: 3000,
-                                isClosable: true,
-                            });
-                            setAddresses([])
-                            handleRouteToParent()
+                            // // toast({
+                            // //     title: `No addresses found!`,
+                            // //     status: 'warning',
+                            // //     variant: 'left-accent',
+                            // //     position: 'top-right',
+                            // //     duration: 3000,
+                            // //     isClosable: true,
+                            // // });
+                            // setAddresses([])
+                            // handleRouteToParent()
+                            setIsTurboAddressVisible(true)
                         }}>
                             <FaChevronDown />
                             <Text as='span'>Load More</Text>

@@ -19,6 +19,13 @@ class LocalStorageHandler {
     localStorage?.removeItem('addresses')
   }
 
+  resetSession() {
+    localStorage?.removeItem('phone')
+    localStorage?.removeItem('verified')
+    localStorage?.removeItem('addresses')
+    localStorage?.removeItem('turboAddressCount')
+  }
+
   addTurboAddresses(addresses: any) {
     localStorage?.setItem('addresses', addresses)
   }
@@ -35,7 +42,7 @@ class LocalStorageHandler {
       phone: localStorage?.getItem('phone'),
       verified: localStorage?.getItem('verified'),
       addresses: JSON.parse(
-        decodeURIComponent(localStorage?.getItem('addresses') ?? '[]')
+        decodeURIComponent(localStorage?.getItem('addresses') || '[]')
       ),
       turboAddressCount: turboAddressCount ? +turboAddressCount : null,
     }

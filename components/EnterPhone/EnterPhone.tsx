@@ -53,7 +53,7 @@ export default function EnterPhone() {
             turboAddressCount,
           } = LocalStorageHandler.getData()
           // User uses the same number previously verified
-          if (phone && phone === values.phone && verified === 'true') {
+          if (phone && phone == values.phone && verified === 'true') {
             router.push('/addresses')
             return
           }
@@ -79,26 +79,29 @@ export default function EnterPhone() {
           // localStorage?.removeItem('addresses')
           // localStorage?.removeItem('verified')
 
-          const countRes = await getTurboAddressCount(values.phone)
-          if (!countRes.ok) {
-            showErrorToast(toast, {
-              error_code: '500',
-              message:
-                'An internal server error occurred. Please try again later.',
-            })
-            return
-          }
+          let TAC = turboAddressCount;
 
-          const countData = await countRes.json()
+          if(TAC === null || TAC === undefined) {
+            const countRes = await getTurboAddressCount(values.phone)
+            if (!countRes.ok) {
+              showErrorToast(toast, {
+                error_code: '500',
+                message:
+                  'An internal server error occurred. Please try again later.',
+              })
+              return
+            }
+
+            const countData = await countRes.json()
+            TAC = countData?.['turbo-address-count']
+          }
+          
           LocalStorageHandler.setPhone(
             values.phone,
-            countData?.['turbo-address-count']
+            TAC || 0
           )
 
-          if (
-            !countData?.['turbo-address-count'] ||
-            countData?.['turbo-address-count'] === 0
-          ) {
+          if (!TAC) {
             window?.top?.postMessage(
               {
                 type: 'TURBO_ROUTE',
@@ -129,7 +132,7 @@ export default function EnterPhone() {
             },
             'verify'
           )
-        } catch {
+        } catch(err) {
           showErrorToast(toast, {
             error_code: '500',
             message:

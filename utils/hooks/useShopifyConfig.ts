@@ -36,6 +36,8 @@ export default function useShopifyConfig() {
           requireOtp: message.data.requireOtp,
           phone: INIT_SHOPIFY_CONFIG.phone,
           addresses: INIT_SHOPIFY_CONFIG.addresses.map(sanitiseAddress),
+          turboAddressCount: INIT_SHOPIFY_CONFIG.turboAddressCount,
+          logged_in_customer_id: INIT_SHOPIFY_CONFIG.logged_in_customer_id,
         })
       }
     }
