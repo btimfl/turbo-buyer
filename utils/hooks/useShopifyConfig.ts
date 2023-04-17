@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import cleanPhoneNumber from '../functions/cleanPhoneNumber'
 import {
   INIT_SHOPIFY_CONFIG,
   ShopifyConfig,
@@ -30,12 +31,18 @@ export default function useShopifyConfig() {
 
       console.log('Shopify Config >> ', message.data)
 
-      if (message.data?.hasOwnProperty('requireOtp')) {
+      if (message.data?.type === 'TURBO_INIT') {
         setConfig({
           clientLogo: message.data.brandLogoUrl,
           requireOtp: message.data.requireOtp,
-          phone: INIT_SHOPIFY_CONFIG.phone,
-          addresses: INIT_SHOPIFY_CONFIG.addresses.map(sanitiseAddress),
+          // phone: INIT_SHOPIFY_CONFIG.phone,
+          // addresses: INIT_SHOPIFY_CONFIG.addresses.map(sanitiseAddress),
+          // turboAddressCount: INIT_SHOPIFY_CONFIG.turboAddressCount,
+          // logged_in_customer_id: INIT_SHOPIFY_CONFIG.logged_in_customer_id,
+          phone: cleanPhoneNumber(message.data.shopifyUser.mobile),
+          addresses: message.data.shopifyUser.addresses.map(sanitiseAddress),
+          turboAddressCount: message.data.shopifyUser.turbo_add_present,
+          logged_in_customer_id: INIT_SHOPIFY_CONFIG.logged_in_customer_id,
         })
       }
     }

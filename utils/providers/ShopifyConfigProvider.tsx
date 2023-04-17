@@ -7,6 +7,8 @@ export type ShopifyConfig = {
   clientLogo: string | null
   phone: string | null
   addresses: any[]
+  turboAddressCount: number | null
+  logged_in_customer_id: string | null | undefined
 }
 
 export const INIT_SHOPIFY_CONFIG: ShopifyConfig = {
@@ -61,8 +63,10 @@ export const INIT_SHOPIFY_CONFIG: ShopifyConfig = {
   //     zip: 'G1R 4P5',
   //   },
   // ],
-  phone: null,
+  phone: '',
   addresses: [],
+  turboAddressCount: null,
+  logged_in_customer_id: '1',
 }
 
 export const ShopifyConfigContext =

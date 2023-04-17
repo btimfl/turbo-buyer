@@ -1,4 +1,4 @@
-import gateway from './gateway';
+import gateway from './gateway'
 
 // const baseUrl = 'https://unifill.unicommerce.co.in/vas';
 // const baseUrl = 'http://localhost:8080'; //'https://unifill.unicommerce.co.in';
@@ -33,13 +33,10 @@ export async function fetchAddressWithOtp(otp: string, otp_request_id: string, m
     window?.top?.postMessage({ type: "TURBO_CALL", apiInfo}, '*');
 }
 
-export async function getPostalAddress(pincode: string): Promise<any> {
-    const res = await gateway(`${baseUrl}/v1/pincode/${pincode}`, 'GET');
-    return res.json();
-}
-
-/********************************************** PAYMENT ***********************************************************/
-export async function getOrderById(id: string): Promise<Response> {
-    const res = await gateway(`${baseUrl}/v1/order/${id}`, `GET`);
-    return res;
+export async function getTurboAddressCount(phone: string): Promise<Response> {
+  const res = await gateway(
+    `http://localhost:4001/turbo/count?mobile=${phone}`,
+    'GET'
+  )
+  return res
 }

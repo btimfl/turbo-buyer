@@ -1,8 +1,5 @@
-import { Provider } from 'react-redux'
 import { Flex, ChakraProvider, Center, Spinner } from '@chakra-ui/react'
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import type { AppProps } from 'next/app'
-import store from '../redux/store'
 import Navigation from '../components/Navigation/Navigation'
 import '../styles/globals.css'
 import styles from './../styles/app.module.scss'
@@ -15,8 +12,6 @@ import { mulish, theme } from '../utils/configurations/chakraTheme'
 import ShopifyConfigProvider from '../utils/providers/ShopifyConfigProvider'
 import UserProvider from '../utils/providers/UserProvider'
 
-const queryClient = new QueryClient()
-
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
   NProgress.settings.showSpinner = false
@@ -28,31 +23,24 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
-      <Provider store={store}>
-        <ChakraProvider theme={theme}>
-          <QueryClientProvider client={queryClient}>
-            <ShopifyConfigProvider>
-              <UserProvider>
-                <Flex flexDir='row' className={mulish.className}>
-                  <Flex className={styles.container} flexDir='column' grow={1}>
-                    <Navigation />
-                    {isRouteChanging ? (
-                      <Center h={`calc(100vh - 3rem)`}>
-                        <Spinner />
-                      </Center>
-                    ) : (
-                      <Component
-                        {...pageProps}
-                        className={styles.pageContainer}
-                      />
-                    )}
-                  </Flex>
-                </Flex>
-              </UserProvider>
-            </ShopifyConfigProvider>
-          </QueryClientProvider>
-        </ChakraProvider>
-      </Provider>
+      <ChakraProvider theme={theme}>
+        <ShopifyConfigProvider>
+          <UserProvider>
+            <Flex flexDir='row' className={mulish.className}>
+              <Flex className={styles.container} flexDir='column' grow={1}>
+                <Navigation />
+                {isRouteChanging ? (
+                  <Center h={`calc(100vh - 3rem)`}>
+                    <Spinner />
+                  </Center>
+                ) : (
+                  <Component {...pageProps} className={styles.pageContainer} />
+                )}
+              </Flex>
+            </Flex>
+          </UserProvider>
+        </ShopifyConfigProvider>
+      </ChakraProvider>
     </>
   )
 }
