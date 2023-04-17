@@ -85,7 +85,7 @@ export default function Profile() {
             // localStorage?.removeItem('addresses')
             // localStorage?.removeItem('verified')
 
-            let TAC = turboAddressCount
+            let TAC = values.phone == _phone ? turboAddressCount : null
 
             if (TAC === null || TAC === undefined) {
               const countRes = await getTurboAddressCount(values.phone)

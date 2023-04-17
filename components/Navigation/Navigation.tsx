@@ -17,6 +17,7 @@ export default function Navigation() {
   }
 
   const handleClose = () => {
+    router.replace('/')
     window?.top!.postMessage({ type: 'TURBO_EXIT', data: 'close event' }, '*')
   }
 
