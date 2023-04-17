@@ -69,7 +69,7 @@ export default function Profile() {
                 {
                   type: 'TURBO_ROUTE',
                   address: JSON.stringify({
-                    mobile: phone,
+                    mobile: values.phone,
                   }),
                 },
                 '*'
@@ -109,7 +109,7 @@ export default function Profile() {
                 {
                   type: 'TURBO_ROUTE',
                   address: JSON.stringify({
-                    mobile: phone,
+                    mobile: values.phone,
                   }),
                 },
                 '*'
