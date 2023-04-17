@@ -61,5 +61,5 @@ export default function useAuthCookies(router: NextRouter) {
     setPhone(null)
     setAddresses([])
     router.push('/profile')
-  }, [])
+  }, [clientLogo])
 }
