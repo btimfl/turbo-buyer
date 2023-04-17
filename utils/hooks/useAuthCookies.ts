@@ -1,6 +1,6 @@
 import { NextRouter } from 'next/router'
 import { useContext, useEffect } from 'react'
-import LocalStorageHandler from '../LocalStorageHandler'
+import LocalStorageHandler from '../models/LocalStorageHandler'
 import { ShopifyConfigContext } from '../providers/ShopifyConfigProvider'
 import { UserContext } from '../providers/UserProvider'
 

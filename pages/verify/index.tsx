@@ -14,13 +14,13 @@ import { useRouter } from 'next/router'
 import { useState, ChangeEvent, useContext } from 'react'
 import { fetchAddressWithOtp } from '../../apis/get'
 import { sendOTP } from '../../apis/post'
-import { showErrorToast } from '../../utils/toasts'
+import { showErrorToast } from '../../utils/functions/toasts'
 import * as Yup from 'yup'
 import useOTPTimer from '../../utils/hooks/useOTPTimer'
 import { getFormDefaultsForOTP } from '../../utils/functions/otp'
 import { UserContext } from '../../utils/providers/UserProvider'
 import styles from './verify.module.scss'
-import LocalStorageHandler from '../../utils/LocalStorageHandler'
+import LocalStorageHandler from '../../utils/models/LocalStorageHandler'
 
 export default function EnterOTP() {
   const router = useRouter()

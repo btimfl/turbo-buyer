@@ -1,9 +1,13 @@
-import { getHeaders } from './../utils/headers';
+import { getHeaders } from '../utils/configurations/headers'
 
-export default async function gateway(path: string, method: string = 'GET', payload?: any, headersMap?: any) {
-    return fetch(path, {
-        method,
-        headers: getHeaders(method, headersMap),
-        body: method === 'GET' ? null : payload
-    });
+export default async function gateway(
+  path: string,
+  method: string = 'GET',
+  payload?: any
+) {
+  return fetch(path, {
+    method,
+    headers: getHeaders(method),
+    body: method === 'GET' ? null : payload,
+  })
 }

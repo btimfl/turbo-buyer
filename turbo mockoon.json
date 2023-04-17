@@ -335,7 +335,7 @@
       "responses": [
         {
           "uuid": "0f17ce40-8ca6-4852-946f-88ae382756e2",
-          "body": "{\n  \"successful\": true,\n  \"turbo-address-count\": 0\n}",
+          "body": "{\n  \"successful\": true,\n  \"turbo-address-count\": 2\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
