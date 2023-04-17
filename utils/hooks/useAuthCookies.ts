@@ -10,11 +10,15 @@ export default function useAuthCookies(router: NextRouter) {
     logged_in_customer_id,
     addresses: shopifyAddresses,
     turboAddressCount,
+    clientLogo,
   } = useContext(ShopifyConfigContext)
   const { setPhone, setAddresses } = useContext(UserContext)
 
   useEffect(() => {
-    // User is a verified shopify user
+    // CASE: IF TURBO_INIT HAS NOT YET BEEN CALLED
+    if (clientLogo === null) return
+
+    // CASE: SHOPIFY USER
     if (logged_in_customer_id) {
       const doesPhoneNumberExist = Boolean(_phone)
       const doesShopifyAddressExist = shopifyAddresses?.length
@@ -38,27 +42,14 @@ export default function useAuthCookies(router: NextRouter) {
       return
     }
 
-    // if (_phone) {
-    // LocalStorageHandler.setShopifyUser(_phone)
-    // localStorage?.setItem('phone', _phone)
-    // localStorage?.setItem('verified', 'true')
-    // setPhone(_phone)
-    // router.push('/addresses')
-    // return
-    // }
-
     const {
       phone,
       verified: isVerified,
       addresses,
     } = LocalStorageHandler.getData()
 
-    // const phone = localStorage?.getItem('phone')
-    // const isVerified = localStorage?.getItem('verified')
-    // const addresses = JSON.parse(
-    //   decodeURIComponent(localStorage?.getItem('addresses') ?? '[]')
-    // )
-
+    // CASE: GUEST USER
+    // IF GUEST USER HAS USED TURBO BEFORE
     if (phone && isVerified === 'true') {
       setPhone(phone)
       setAddresses(addresses)
@@ -66,6 +57,7 @@ export default function useAuthCookies(router: NextRouter) {
       return
     }
 
+    // IF GUEST USER IS USING TURBO FOR THE FIRST TIME
     setPhone(null)
     setAddresses([])
     router.push('/profile')

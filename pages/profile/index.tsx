@@ -16,7 +16,7 @@ import styles from './profile.module.scss'
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import { Formik, Form } from 'formik'
 import router from 'next/router'
-import { useContext, useRef, useEffect } from 'react'
+import { useContext, useRef, useEffect, useState } from 'react'
 import { getTurboAddressCount } from '../../apis/get'
 import { sendOTP } from '../../apis/post'
 import PageFooter from '../../components/PageFooter/PageFooter'
@@ -27,19 +27,22 @@ import * as Yup from 'yup'
 
 export default function Profile() {
   const { phone, setPhone, setAddresses } = useContext(UserContext)
+  const [phoneInit, setPhoneInit] = useState<string>(phone || '')
+
   const inputRef = useRef<HTMLInputElement>(null)
   const toast = useToast()
 
   useEffect(() => {
     inputRef?.current?.focus()
+    if (!phoneInit && LocalStorageHandler.getData().phone)
+      setPhoneInit(LocalStorageHandler.getData().phone || '')
   }, [])
 
   return (
     <Center className={styles.container}>
       <Formik
         initialValues={{
-          // phone: phone ?? LocalStorageHandler.getData().phone ?? '',
-          phone: phone ?? '',
+          phone: phoneInit,
         }}
         validationSchema={Yup.object({
           phone: Yup.string()
