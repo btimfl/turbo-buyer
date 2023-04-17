@@ -174,10 +174,9 @@ export default function EnterPhone() {
                     border='1px solid black'
                     mb={2}
                     onClick={() => {
-                      window?.top!.postMessage(
-                        { type: 'TURBO_EXIT', data: 'close event' },
-                        '*'
-                      )
+                      window?.top?.postMessage({ type: "TURBO_ROUTE", address: JSON.stringify({
+                        mobile: phone,
+                      })}, '*');
                     }}
                   >
                     <Text as='span' fontSize='sm' textTransform={`uppercase`}>
