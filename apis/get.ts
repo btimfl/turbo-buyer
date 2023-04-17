@@ -1,42 +1,33 @@
-import gateway from './gateway'
+import { baseURL } from './gateway'
 
-// const baseUrl = 'https://unifill.unicommerce.co.in/vas';
-// const baseUrl = 'http://localhost:8080'; //'https://unifill.unicommerce.co.in';
-const baseUrl = "/a/u";
-/********************************************** BUYER ***********************************************************/
-export async function fetchAddresses(phone: string): Promise<void> {
-    // const res = await gateway(`${baseUrl}/v1/addresses?mobile=${phone}`, 'GET');
-    // return res.json();
+export function fetchAddressWithOtp(
+  otp: string,
+  otp_request_id: string,
+  mobile: string
+) {
+  const apiInfo = {
+    path: `${baseURL}/v1/shopify-turbo-addresses?otp=${otp}&otp_request_id=${otp_request_id}&mobile=${mobile}`,
+    data: {
+      method: 'GET',
+    },
+  }
 
-    const apiInfo = {
-        path: `${baseUrl}/v1/addresses?mobile=${phone}`, 
-        data: {
-            method: 'GET',
-        }
-    };
-
-    window?.top?.postMessage({ type: "TURBO_CALL", apiInfo}, '*');
-}
-
-export async function fetchAddressWithOtp(otp: string, otp_request_id: string, mobile: string): Promise<Response> {
-    // debugger;
-    // const res = await gateway(`${baseUrl}/v1/addresses?otp=${otp}&otp_request_id=${otp_request_id}&mobile=${mobile}`, 'GET');
-    // return res;
-
-    const apiInfo = {
-        path: `${baseUrl}/v1/addresses?otp=${otp}&otp_request_id=${otp_request_id}&mobile=${mobile}`, 
-        data: {
-            method: 'GET',
-        }
-    };
-
-    window?.top?.postMessage({ type: "TURBO_CALL", apiInfo}, '*');
-}
-
-export async function getTurboAddressCount(phone: string): Promise<Response> {
-  const res = await gateway(
-    `http://localhost:4001/turbo/count?mobile=${phone}`,
-    'GET'
+  window?.top?.postMessage(
+    { type: 'TURBO_CALL', apiInfo, key: 'FETCH_ADDRESS' },
+    '*'
   )
-  return res
+}
+
+export function getTurboAddressCount(phone: string) {
+  const apiInfo = {
+    path: `${baseURL}/v1/shopify-store-addresses?mobile=${phone}`,
+    data: {
+      method: 'GET',
+    },
+  }
+
+  window?.top?.postMessage(
+    { type: 'TURBO_CALL', apiInfo, key: 'FETCH_TAC' },
+    '*'
+  )
 }

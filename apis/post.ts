@@ -1,14 +1,15 @@
-import gateway from './gateway'
+import { baseURL } from './gateway'
 
-// const baseUrl = 'https://unifill.unicommerce.co.in/vas'
-// const baseUrl = 'http://localhost:8080';
-const baseUrl = 'https://unifill.unicommerce.co.in'
-// const baseUrl = '/apps/unifill';
+export function sendOTP(phone: string) {
+  const apiInfo = {
+    path: `${baseURL}/v1/shopify-app/auth/otp?mobile=${phone}`,
+    data: {
+      method: 'POST',
+    },
+  }
 
-export async function sendOTP(phone: string): Promise<Response> {
-  const res = await gateway(
-    `${baseUrl}/vas/auth/v1/otp?mobile=${phone}`,
-    `POST`
+  window?.top?.postMessage(
+    { type: 'TURBO_CALL', apiInfo, key: 'SEND_OTP' },
+    '*'
   )
-  return res
 }
