@@ -12,12 +12,8 @@ export default function Navigation() {
 
   const { clientLogo } = useContext(ShopifyConfigContext)
 
-  const handleBackNavigation = () => {
-    router.back()
-  }
-
   const handleClose = () => {
-    router.replace('/')
+    router.push('/')
     window?.top!.postMessage({ type: 'TURBO_EXIT', data: 'close event' }, '*')
   }
 
@@ -25,13 +21,13 @@ export default function Navigation() {
     <div className={styles.container}>
       <div className={styles.brand}>
         {/* {router.pathname === '/profile' ? ( */}
-          <IconButton
-            aria-label='close'
-            icon={<SmallCloseIcon />}
-            background={'transparent'}
-            _hover={{ bg: 'transparent' }}
-            onClick={handleClose}
-          />
+        <IconButton
+          aria-label='close'
+          icon={<SmallCloseIcon />}
+          background={'transparent'}
+          _hover={{ bg: 'transparent' }}
+          onClick={handleClose}
+        />
         {/* ) : (
           <></>
         )} */}

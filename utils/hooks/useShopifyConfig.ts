@@ -42,8 +42,9 @@ export default function useShopifyConfig() {
           phone: cleanPhoneNumber(message.data.shopifyUser?.mobile),
           addresses: message.data.shopifyUser?.addresses.map(sanitiseAddress),
           turboAddressCount: message.data.shopifyUser?.turbo_add_present,
-          logged_in_customer_id: message.data.shopifyUser?.logged_in_customer_id,
-          cartItemsLength: message.data?.cartPayload?.item_count
+          logged_in_customer_id:
+            message.data.shopifyUser?.logged_in_customer_id,
+          cartItemsLength: message.data?.cartPayload?.item_count,
         })
       }
     }
