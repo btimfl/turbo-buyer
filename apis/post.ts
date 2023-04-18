@@ -1,6 +1,6 @@
 import { baseURL } from './gateway'
 
-export function sendOTP(phone: string): Promise<Response> {
+export function sendOTP(phone: string): Promise<any> {
   const apiInfo = {
     path: `${baseURL}/v1/shopify-app/auth/otp?mobile=${phone}`,
     data: {
@@ -19,7 +19,7 @@ export function sendOTP(phone: string): Promise<Response> {
         message.data?.type === 'TURBO_CALLBACK' &&
         message.data?.key === 'SEND_OTP'
       ) {
-        res(message.data?.response)
+        res(message.data?.apiResponse)
       }
     })
   })

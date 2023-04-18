@@ -4,7 +4,7 @@ export function fetchAddressWithOtp(
   otp: string,
   otp_request_id: string,
   mobile: string
-): Promise<Response> {
+): Promise<any> {
   const apiInfo = {
     path: `${baseURL}/v1/shopify-turbo-addresses?otp=${otp}&otp_request_id=${otp_request_id}&mobile=${mobile}`,
     data: {
@@ -23,13 +23,13 @@ export function fetchAddressWithOtp(
         message.data?.type === 'TURBO_CALLBACK' &&
         message.data?.key === 'FETCH_ADDRESS'
       ) {
-        res(message.data?.response)
+        res(message.data?.apiResponse)
       }
     })
   })
 }
 
-export function getTurboAddressCount(phone: string): Promise<Response> {
+export function getTurboAddressCount(phone: string): Promise<any> {
   const apiInfo = {
     path: `${baseURL}/v1/shopify-store-addresses?mobile=${phone}`,
     data: {
@@ -48,7 +48,7 @@ export function getTurboAddressCount(phone: string): Promise<Response> {
         message.data?.type === 'TURBO_CALLBACK' &&
         message.data?.key === 'FETCH_TAC'
       ) {
-        res(message.data?.response)
+        res(message.data?.apiResponse)
       }
     })
   })

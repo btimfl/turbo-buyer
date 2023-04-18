@@ -86,16 +86,14 @@ export default function EnterOTP() {
         onSubmit={async (values) => {
           const otp = inputs.reduce((acc, curr) => acc + values[curr] ?? '', '')
           try {
-            // NOTE: OTP VERIFICATION SHOULD BE A SEPARATE FLOW NOW??
-            const res = await fetchAddressWithOtp(
+            const data = await fetchAddressWithOtp(
               otp,
               otpRequestId,
               phone ? String(phone) : ''
             )
-            const data = await res.json()
 
-            if (!res.ok) {
-              showErrorToast(toast, data.api_error)
+            if (data.ok === false) {
+              console.error('Error: ', data.error)
               setIsOtpInvalid(true)
               return
             }
@@ -106,11 +104,6 @@ export default function EnterOTP() {
               LocalStorageHandler.markVerified(
                 encodeURIComponent(JSON.stringify(data.address_list))
               )
-              // localStorage?.setItem(
-              //   'addresses',
-              //   encodeURIComponent(JSON.stringify(data.address_list))
-              // )
-              // localStorage?.setItem('verified', 'true')
               router.push('/addresses')
             } else {
               setIsOtpInvalid(true)

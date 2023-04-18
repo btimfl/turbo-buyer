@@ -81,25 +81,16 @@ export default function Profile() {
             setPhone(values.phone)
             setAddresses([])
             LocalStorageHandler.markUnverified()
-            // localStorage?.setItem('phone', values.phone)
-            // localStorage?.removeItem('addresses')
-            // localStorage?.removeItem('verified')
 
             let TAC = values.phone == _phone ? turboAddressCount : null
 
             if (TAC === null || TAC === undefined) {
-              const countRes = await getTurboAddressCount(values.phone)
-              if (!countRes.ok) {
-                showErrorToast(toast, {
-                  error_code: '500',
-                  message:
-                    'An internal server error occurred. Please try again later.',
-                })
+              const countData = await getTurboAddressCount(values.phone)
+              if (countData.ok === false) {
+                console.error('Error: ', countData.err)
                 return
               }
-
-              const countData = await countRes.json()
-              TAC = countData?.['turbo-address-count']
+              TAC = countData?.['turbo_add_present']
             }
 
             LocalStorageHandler.setPhone(values.phone, TAC || 0)
@@ -117,11 +108,10 @@ export default function Profile() {
               return
             }
 
-            const res = await sendOTP(values.phone)
-            const data = await res.json()
+            const data = await sendOTP(values.phone)
 
-            if (!res.ok) {
-              showErrorToast(toast, data)
+            if (data.ok === false) {
+              console.error('Error: ', data.error)
               return
             }
 
@@ -151,7 +141,6 @@ export default function Profile() {
           isSubmitting,
           handleBlur,
           handleChange,
-          submitForm,
         }) => (
           <Flex flexDir={`column`} justifyContent={`space-between`} h={`100%`}>
             <Box w={`100%`} h={'100%'}>
