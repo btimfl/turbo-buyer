@@ -11,12 +11,18 @@ export default function useAuthCookies(router: NextRouter) {
     addresses: shopifyAddresses,
     turboAddressCount,
     clientLogo,
+    cartItemsLength
   } = useContext(ShopifyConfigContext)
   const { setPhone, setAddresses } = useContext(UserContext)
 
   useEffect(() => {
     // CASE: IF TURBO_INIT HAS NOT YET BEEN CALLED
     if (clientLogo === null) return
+
+    if(cartItemsLength === 0) {
+      router.push("/empty");
+      return;
+    }
 
     // CASE: SHOPIFY USER
     if (logged_in_customer_id) {
@@ -61,5 +67,5 @@ export default function useAuthCookies(router: NextRouter) {
     setPhone(null)
     setAddresses([])
     router.push('/profile')
-  }, [clientLogo])
+  }, [clientLogo, cartItemsLength])
 }

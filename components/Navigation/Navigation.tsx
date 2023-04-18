@@ -24,7 +24,7 @@ export default function Navigation() {
   return (
     <div className={styles.container}>
       <div className={styles.brand}>
-        {router.pathname === '/profile' ? (
+        {/* {router.pathname === '/profile' ? ( */}
           <IconButton
             aria-label='close'
             icon={<SmallCloseIcon />}
@@ -32,10 +32,10 @@ export default function Navigation() {
             _hover={{ bg: 'transparent' }}
             onClick={handleClose}
           />
-        ) : (
+        {/* ) : (
           <></>
-        )}
-        {router.pathname === '/verify' ? (
+        )} */}
+        {/* {router.pathname === '/empty' | ? (
           <IconButton
             aria-label='back'
             icon={<ArrowBackIcon />}
@@ -45,9 +45,11 @@ export default function Navigation() {
           />
         ) : (
           <></>
-        )}
-        <Text as='span' fontSize='sm' fontWeight='bold' px={2}>
-          {router.pathname === '/addresses' ? 'ADDRESSES' : 'PROFILE'}
+        )} */}
+        <Text as='span' fontSize='sm' fontWeight='bold'>
+          {router.pathname === '/empty' ? 'EMPTY CART' : ''}
+          {router.pathname === '/addresses' ? 'ADDRESSES' : ''}
+          {router.pathname === '/profile' ? 'PROFILE' : ''}
         </Text>
       </div>
       <div className={styles.attribution}>

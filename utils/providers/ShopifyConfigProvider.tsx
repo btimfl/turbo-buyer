@@ -9,11 +9,13 @@ export type ShopifyConfig = {
   addresses: any[]
   turboAddressCount: number | null
   logged_in_customer_id: string | null | undefined
+  cartItemsLength: number | null
 }
 
 export const INIT_SHOPIFY_CONFIG: ShopifyConfig = {
   requireOtp: true,
   clientLogo: null,
+  cartItemsLength: null,
   // phone: '9654723413',
   // addresses: [
   //   {
