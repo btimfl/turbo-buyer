@@ -1,10 +1,12 @@
-import { baseURL } from './gateway'
+import gateway, { baseURL } from './gateway'
 
 export function fetchAddressWithOtp(
   otp: string,
   otp_request_id: string,
   mobile: string
 ): Promise<any> {
+  const KEY = 'FETCH_ADDRESS'
+
   const apiInfo = {
     path: `${baseURL}/v1/shopify-turbo-addresses?otp=${otp}&otp_request_id=${otp_request_id}&mobile=${mobile}`,
     data: {
@@ -17,19 +19,12 @@ export function fetchAddressWithOtp(
     '*'
   )
 
-  return new Promise((res, rej) => {
-    window.addEventListener('message', (message) => {
-      if (
-        message.data?.type === 'TURBO_CALLBACK' &&
-        message.data?.key === 'FETCH_ADDRESS'
-      ) {
-        res(message.data?.apiResponse)
-      }
-    })
-  })
+  return gateway(KEY)
 }
 
 export function getTurboAddressCount(phone: string): Promise<any> {
+  const KEY = 'FETCH_TAC'
+
   const apiInfo = {
     path: `${baseURL}/v1/shopify-store-addresses?mobile=${phone}`,
     data: {
@@ -42,14 +37,5 @@ export function getTurboAddressCount(phone: string): Promise<any> {
     '*'
   )
 
-  return new Promise((res, rej) => {
-    window.addEventListener('message', (message) => {
-      if (
-        message.data?.type === 'TURBO_CALLBACK' &&
-        message.data?.key === 'FETCH_TAC'
-      ) {
-        res(message.data?.apiResponse)
-      }
-    })
-  })
+  return gateway(KEY)
 }
