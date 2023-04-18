@@ -10,7 +10,6 @@ import {
   InputLeftAddon,
   Link,
   Text,
-  useToast,
 } from '@chakra-ui/react'
 import styles from './profile.module.scss'
 import { ChevronRightIcon } from '@chakra-ui/icons'
@@ -20,7 +19,6 @@ import { useContext, useRef, useEffect, useState } from 'react'
 import { getTurboAddressCount } from '../../apis/get'
 import { sendOTP } from '../../apis/post'
 import PageFooter from '../../components/PageFooter/PageFooter'
-import { showErrorToast } from '../../utils/functions/toasts'
 import LocalStorageHandler from '../../utils/models/LocalStorageHandler'
 import { UserContext } from '../../utils/providers/UserProvider'
 import * as Yup from 'yup'
@@ -30,7 +28,6 @@ export default function Profile() {
   const [phoneInit, setPhoneInit] = useState<string>(phone || '')
 
   const inputRef = useRef<HTMLInputElement>(null)
-  const toast = useToast()
 
   useEffect(() => {
     inputRef?.current?.focus()
@@ -126,11 +123,7 @@ export default function Profile() {
               'verify'
             )
           } catch (err) {
-            showErrorToast(toast, {
-              error_code: '500',
-              message:
-                'An Internal Server Error Occurred, Please Try Again Later',
-            })
+            console.error('Error: ', err)
           }
         }}
       >

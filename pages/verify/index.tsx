@@ -7,14 +7,12 @@ import {
   FormErrorMessage,
   Center,
   Text,
-  useToast,
 } from '@chakra-ui/react'
 import { Formik, Form } from 'formik'
 import { useRouter } from 'next/router'
 import { useState, ChangeEvent, useContext } from 'react'
 import { fetchAddressWithOtp } from '../../apis/get'
 import { sendOTP } from '../../apis/post'
-import { showErrorToast } from '../../utils/functions/toasts'
 import * as Yup from 'yup'
 import useOTPTimer from '../../utils/hooks/useOTPTimer'
 import { getFormDefaultsForOTP } from '../../utils/functions/otp'
@@ -36,7 +34,6 @@ export default function EnterOTP() {
   const [isOtpInvalid, setIsOtpInvalid] = useState<boolean | undefined>(
     undefined
   )
-  const toast = useToast()
 
   const { inputs, initialValues, validation } =
     getFormDefaultsForOTP(OTP_DIGITS)
@@ -60,20 +57,16 @@ export default function EnterOTP() {
   const handleResendOTP = async () => {
     try {
       const res = await sendOTP(phone ? String(phone) : '')
-      const data = await res.json()
 
-      if (res.status !== 200) {
-        showErrorToast(toast, data.api_error)
+      if (res.ok === false) {
+        console.error('Error: ', res.error)
         return
       }
 
-      setOtpRequestId(data.otp_request_id)
+      setOtpRequestId(res.otp_request_id)
       setTimer(30)
-    } catch {
-      showErrorToast(toast, {
-        error_code: '500',
-        message: 'An Internal Server Error Occurred, Please Try Again Later',
-      })
+    } catch (err) {
+      console.error('Error: ', err)
     }
   }
 
@@ -108,12 +101,8 @@ export default function EnterOTP() {
             } else {
               setIsOtpInvalid(true)
             }
-          } catch {
-            showErrorToast(toast, {
-              error_code: '500',
-              message:
-                'An Internal Server Error Occurred, Please Try Again Later',
-            })
+          } catch (err) {
+            console.error('Error: ', err)
           }
         }}
       >
