@@ -4,7 +4,7 @@ export function sendOTP(phone: string): Promise<any> {
   const KEY = 'SEND_OTP'
 
   const apiInfo = {
-    path: `${baseURL}/v1/shopify-app/auth/otp?mobile=${phone}`,
+    path: `${baseURL}/auth/v1/otp?mobile=${phone}`,
     data: {
       method: 'POST',
     },
