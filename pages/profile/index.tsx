@@ -179,13 +179,16 @@ export default function Profile() {
                   <Text fontSize={`sm`} textAlign={`center`}>
                     By continuing, I agree to the{' '}
                     <Link
-                      href={`https://unicommerce.com`}
+                      href={`https://unicommerce.com/terms-and-conditions`}
                       className={styles.link}
                     >
                       Terms of Use
                     </Link>{' '}
                     &{' '}
-                    <Link href={'#'} className={styles.link}>
+                    <Link
+                      href={'https://unicommerce.com/privacy-policy'}
+                      className={styles.link}
+                    >
                       Privacy Policy
                     </Link>
                   </Text>
