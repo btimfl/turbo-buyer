@@ -64,7 +64,7 @@ export default function useAuthCookies(router: NextRouter) {
     }
 
     // IF GUEST USER IS USING TURBO FOR THE FIRST TIME
-    setPhone(null)
+    setPhone(phone || null)
     setAddresses([])
     router.push('/profile')
   }, [clientLogo, cartItemsLength])
