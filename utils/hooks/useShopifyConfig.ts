@@ -33,16 +33,18 @@ export default function useShopifyConfig() {
 
       if (message.data?.type === 'TURBO_INIT') {
         setConfig({
-          clientLogo: message.data.brandLogoUrl,
+          clientLogo: message.data.uploadedLogoPath,
           requireOtp: message.data.requireOtp,
           // phone: INIT_SHOPIFY_CONFIG.phone,
           // addresses: INIT_SHOPIFY_CONFIG.addresses.map(sanitiseAddress),
           // turboAddressCount: INIT_SHOPIFY_CONFIG.turboAddressCount,
           // logged_in_customer_id: INIT_SHOPIFY_CONFIG.logged_in_customer_id,
-          phone: cleanPhoneNumber(message.data.shopifyUser.mobile),
-          addresses: message.data.shopifyUser.addresses.map(sanitiseAddress),
-          turboAddressCount: message.data.shopifyUser.turbo_add_present,
-          logged_in_customer_id: INIT_SHOPIFY_CONFIG.logged_in_customer_id,
+          phone: cleanPhoneNumber(message.data.shopifyUser?.mobile),
+          addresses: message.data.shopifyUser?.addresses.map(sanitiseAddress),
+          turboAddressCount: message.data.shopifyUser?.turbo_add_present,
+          logged_in_customer_id:
+            message.data.shopifyUser?.logged_in_customer_id,
+          cartItemsLength: message.data?.cartPayload?.item_count,
         })
       }
     }

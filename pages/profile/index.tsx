@@ -181,6 +181,7 @@ export default function Profile() {
                     <Link
                       href={`https://unicommerce.com/terms-and-conditions`}
                       className={styles.link}
+                      target='_blank'
                     >
                       Terms of Use
                     </Link>{' '}

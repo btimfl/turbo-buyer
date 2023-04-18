@@ -12,42 +12,25 @@ export default function Navigation() {
 
   const { clientLogo } = useContext(ShopifyConfigContext)
 
-  const handleBackNavigation = () => {
-    router.back()
-  }
-
   const handleClose = () => {
-    router.replace('/')
+    router.push('/')
     window?.top!.postMessage({ type: 'TURBO_EXIT', data: 'close event' }, '*')
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.brand}>
-        {router.pathname === '/profile' ? (
-          <IconButton
-            aria-label='close'
-            icon={<SmallCloseIcon />}
-            background={'transparent'}
-            _hover={{ bg: 'transparent' }}
-            onClick={handleClose}
-          />
-        ) : (
-          <></>
-        )}
-        {router.pathname === '/verify' ? (
-          <IconButton
-            aria-label='back'
-            icon={<ArrowBackIcon />}
-            background={'transparent'}
-            _hover={{ bg: 'transparent' }}
-            onClick={handleBackNavigation}
-          />
-        ) : (
-          <></>
-        )}
-        <Text as='span' fontSize='sm' fontWeight='bold' px={2}>
-          {router.pathname === '/addresses' ? 'ADDRESSES' : 'PROFILE'}
+        <IconButton
+          aria-label='close'
+          icon={<SmallCloseIcon />}
+          background={'transparent'}
+          _hover={{ bg: 'transparent' }}
+          onClick={handleClose}
+        />
+        <Text as='span' fontSize='sm' fontWeight='bold'>
+          {router.pathname === '/empty' ? 'EMPTY CART' : ''}
+          {router.pathname === '/addresses' ? 'ADDRESSES' : ''}
+          {router.pathname === '/profile' ? 'PROFILE' : ''}
         </Text>
       </div>
       <div className={styles.attribution}>
