@@ -24,6 +24,20 @@ export default function useAuthCookies(router: NextRouter) {
       return
     }
 
+    const {
+      phone,
+      verified: isVerified,
+      addresses,
+    } = LocalStorageHandler.getData()
+
+    // CASE: IF USER HAS VERIFIED HIMSELF
+    if (phone && isVerified === 'true') {
+      setPhone(phone)
+      setAddresses(addresses)
+      router.push('/addresses')
+      return
+    }
+
     // CASE: SHOPIFY USER
     if (logged_in_customer_id) {
       const doesPhoneNumberExist = Boolean(_phone)
@@ -45,21 +59,6 @@ export default function useAuthCookies(router: NextRouter) {
         else router.push('/profile')
       }
 
-      return
-    }
-
-    const {
-      phone,
-      verified: isVerified,
-      addresses,
-    } = LocalStorageHandler.getData()
-
-    // CASE: GUEST USER
-    // IF GUEST USER HAS USED TURBO BEFORE
-    if (phone && isVerified === 'true') {
-      setPhone(phone)
-      setAddresses(addresses)
-      router.push('/addresses')
       return
     }
 

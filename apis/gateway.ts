@@ -8,11 +8,10 @@ export default async function gateway(key: string): Promise<any> {
         message.data?.key === key
       ) {
         res(message.data?.apiResponse)
-        window.removeEventListener('message', messageHandler)
       }
     }
 
-    window.addEventListener('message', messageHandler)
+    window.addEventListener('message', messageHandler, { once: true })
   })
 
   return new Promise((res, rej) => {
