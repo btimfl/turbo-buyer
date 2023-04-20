@@ -11,6 +11,7 @@ import useRouteChange from '../utils/hooks/useRouteChange'
 import { mulish, theme } from '../utils/configurations/chakraTheme'
 import ShopifyConfigProvider from '../utils/providers/ShopifyConfigProvider'
 import UserProvider from '../utils/providers/UserProvider'
+import { Toaster } from 'react-hot-toast'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
@@ -40,6 +41,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </Flex>
           </UserProvider>
         </ShopifyConfigProvider>
+        <Toaster />
       </ChakraProvider>
     </>
   )

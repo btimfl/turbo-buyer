@@ -19,6 +19,7 @@ import { getFormDefaultsForOTP } from '../../utils/functions/otp'
 import { UserContext } from '../../utils/providers/UserProvider'
 import styles from './verify.module.scss'
 import LocalStorageHandler from '../../utils/models/LocalStorageHandler'
+import NotificationHandler from '../../utils/models/NotificationHandler'
 
 export default function EnterOTP() {
   const router = useRouter()
@@ -59,14 +60,14 @@ export default function EnterOTP() {
       const res = await sendOTP(phone ? String(phone) : '')
 
       if (res.ok === false) {
-        console.error('Error: ', res.error)
+        NotificationHandler.error(res.error)
         return
       }
 
       setOtpRequestId(res.otp_request_id)
       setTimer(30)
     } catch (err) {
-      console.error('Error: ', err)
+      NotificationHandler.error(String(err))
     }
   }
 
@@ -86,7 +87,7 @@ export default function EnterOTP() {
             )
 
             if (data.ok === false) {
-              console.error('Error: ', data.error)
+              NotificationHandler.error(data.error)
               setIsOtpInvalid(true)
               return
             }
@@ -102,7 +103,7 @@ export default function EnterOTP() {
               setIsOtpInvalid(true)
             }
           } catch (err) {
-            console.error('Error: ', err)
+            NotificationHandler.error(String(err))
           }
         }}
       >
