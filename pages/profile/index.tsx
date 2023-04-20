@@ -22,6 +22,7 @@ import PageFooter from '../../components/PageFooter/PageFooter'
 import LocalStorageHandler from '../../utils/models/LocalStorageHandler'
 import { UserContext } from '../../utils/providers/UserProvider'
 import * as Yup from 'yup'
+import NotificationHandler from '../../utils/models/NotificationHandler'
 
 export default function Profile() {
   const { phone, setPhone, setAddresses } = useContext(UserContext)
@@ -84,7 +85,7 @@ export default function Profile() {
             if (TAC === null || TAC === undefined) {
               const countData = await getTurboAddressCount(values.phone)
               if (countData.ok === false) {
-                console.error('Error: ', countData.err)
+                NotificationHandler.error(countData.err)
                 return
               }
               TAC = countData?.['turbo_add_present']
@@ -108,7 +109,7 @@ export default function Profile() {
             const data = await sendOTP(values.phone)
 
             if (data.ok === false) {
-              console.error('Error: ', data.error)
+              NotificationHandler.error(data.error)
               return
             }
 
@@ -123,7 +124,7 @@ export default function Profile() {
               'verify'
             )
           } catch (err) {
-            console.error('Error: ', err)
+            NotificationHandler.error(String(err))
           }
         }}
       >

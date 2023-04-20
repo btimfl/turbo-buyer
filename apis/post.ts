@@ -7,6 +7,7 @@ export function sendOTP(phone: string): Promise<any> {
     path: `${baseURL}/auth/v1/otp?mobile=${phone}`,
     data: {
       method: 'POST',
+      body: JSON.stringify({}),
     },
   }
 
