@@ -91,7 +91,7 @@ export default function Profile() {
               TAC = countData?.['turbo_add_present']
             }
 
-            LocalStorageHandler.setPhone(values.phone, TAC || 0)
+            LocalStorageHandler.setPhone(values.phone, TAC ? +TAC : 0)
 
             if (!TAC) {
               window?.top?.postMessage(

@@ -19,11 +19,10 @@ import { UserContext } from '../../utils/providers/UserProvider'
 import { ShopifyConfigContext } from '../../utils/providers/ShopifyConfigProvider'
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa'
 import LocalStorageHandler from '../../utils/models/LocalStorageHandler'
-import ConfirmationModal from '../../components/ConfirmationModal'
+import { ChevronRightIcon } from '@chakra-ui/icons'
 
 export default function AddressList() {
   const { phone, addresses } = useContext(UserContext)
-  const { isOpen, onClose, onOpen } = useDisclosure()
   const { addresses: shopifyAddresses } = useContext(ShopifyConfigContext)
 
   const [selectedAddress, setSelectedAddress] = useState<any>(null)
@@ -47,6 +46,7 @@ export default function AddressList() {
   }, [])
 
   useEffect(() => {
+    debugger
     if (formik.values.selectedAddress) {
       if (
         shopifyAddresses?.length &&
@@ -56,10 +56,9 @@ export default function AddressList() {
       else
         setSelectedAddress(
           addresses?.[
-            +formik.values.selectedAddress - shopifyAddresses?.length ?? 0
+            +formik.values.selectedAddress - (shopifyAddresses?.length ?? 0)
           ]
         )
-      onOpen()
     }
   }, [formik.values.selectedAddress])
 
@@ -70,6 +69,17 @@ export default function AddressList() {
         address: JSON.stringify({
           mobile: phone,
         }),
+      },
+      '*'
+    )
+  }
+
+  const submitAddress = () => {
+    console.log(selectedAddress)
+    window?.top?.postMessage(
+      {
+        type: 'TURBO_ROUTE',
+        address: JSON.stringify({ ...selectedAddress, mobile: phone }),
       },
       '*'
     )
@@ -217,7 +227,7 @@ export default function AddressList() {
                           colorScheme='green'
                           {...formik.getFieldProps('selectedAddress')}
                           value={(
-                            index + shopifyAddresses?.length ?? 0
+                            index + (shopifyAddresses?.length ?? 0)
                           ).toString()}
                           className={`${styles.radio}`}
                         >
@@ -228,7 +238,7 @@ export default function AddressList() {
                             address={address}
                             mobile={address.mobile}
                             selected={
-                              (index + shopifyAddresses?.length ?? 0) ===
+                              index + (shopifyAddresses?.length ?? 0) ===
                               +formik.values.selectedAddress
                             }
                           />
@@ -260,6 +270,20 @@ export default function AddressList() {
 
         <Box py={2} px={4} className={styles.pageFooter}>
           <Button
+            onClick={submitAddress}
+            isDisabled={!formik.values.selectedAddress}
+            w={`100%`}
+            bg={`black`}
+            color={`white`}
+            _hover={{ background: `black` }}
+            mb={2}
+          >
+            <Text as='span' fontSize='sm' textTransform={`uppercase`}>
+              Proceed
+              <ChevronRightIcon ms={2} fontSize={`lg`} />
+            </Text>
+          </Button>
+          <Button
             onClick={handleRouteToParent}
             fontSize={`sm`}
             variant={`outline`}
@@ -272,15 +296,6 @@ export default function AddressList() {
           </Button>
           <PageFooter />
         </Box>
-
-        <ConfirmationModal
-          formik={formik}
-          isOpen={isOpen}
-          onClose={onClose}
-          selectedAddress={selectedAddress}
-          shopifyAddresses={shopifyAddresses}
-          turboAddresses={addresses || []}
-        />
       </Flex>
     </>
   )
