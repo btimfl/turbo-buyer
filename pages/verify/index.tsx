@@ -148,7 +148,7 @@ export default function EnterOTP() {
                   </PinInput>
                 </HStack>
                 <FormErrorMessage>
-                  <Flex mb={4} justifyContent={`center`}>
+                  <Flex mb={4} justifyContent={`center`} marginInline={'auto'}>
                     Invalid OTP. Please try again.
                   </Flex>
                 </FormErrorMessage>
