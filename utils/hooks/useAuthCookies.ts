@@ -30,14 +30,6 @@ export default function useAuthCookies(router: NextRouter) {
       addresses,
     } = LocalStorageHandler.getData()
 
-    // CASE: IF USER HAS VERIFIED HIMSELF
-    if (phone && isVerified === 'true') {
-      setPhone(phone)
-      setAddresses(addresses)
-      router.push('/addresses')
-      return
-    }
-
     // CASE: SHOPIFY USER
     if (logged_in_customer_id) {
       const doesPhoneNumberExist = Boolean(_phone)
@@ -47,6 +39,14 @@ export default function useAuthCookies(router: NextRouter) {
       LocalStorageHandler.resetSession()
 
       if (doesPhoneNumberExist) {
+        // CASE: IF SHOPIFY USER HAS VERIFIED HIS PHONE NUMBER ONCE
+        if (phone && isVerified === 'true' && phone == _phone) {
+          setPhone(phone)
+          setAddresses(addresses)
+          router.push('/addresses')
+          return
+        }
+
         setPhone(_phone)
         LocalStorageHandler.setPhone(_phone!, +turboAddressCount!)
         if (doesTurboAddressExist) router.push('/profile')
@@ -59,6 +59,14 @@ export default function useAuthCookies(router: NextRouter) {
         else router.push('/profile')
       }
 
+      return
+    }
+
+    // CASE: IF USER HAS VERIFIED HIMSELF
+    if (phone && isVerified === 'true') {
+      setPhone(phone)
+      setAddresses(addresses)
+      router.push('/addresses')
       return
     }
 
