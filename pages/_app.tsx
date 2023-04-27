@@ -12,6 +12,7 @@ import { mulish, theme } from '../utils/configurations/chakraTheme'
 import ShopifyConfigProvider from '../utils/providers/ShopifyConfigProvider'
 import UserProvider from '../utils/providers/UserProvider'
 import { Toaster } from 'react-hot-toast'
+import ErrorBoundary from '../utils/ErrorBoundary'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
@@ -35,7 +36,12 @@ export default function App({ Component, pageProps }: AppProps) {
                     <Spinner />
                   </Center>
                 ) : (
-                  <Component {...pageProps} className={styles.pageContainer} />
+                  <ErrorBoundary>
+                    <Component
+                      {...pageProps}
+                      className={styles.pageContainer}
+                    />
+                  </ErrorBoundary>
                 )}
               </Flex>
             </Flex>
