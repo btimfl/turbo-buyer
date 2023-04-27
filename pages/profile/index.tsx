@@ -32,8 +32,10 @@ export default function Profile() {
 
   useEffect(() => {
     inputRef?.current?.focus()
-    if (!phoneInit && LocalStorageHandler.getData().phone)
-      setPhoneInit(LocalStorageHandler.getData().phone || '')
+    if(typeof window !== undefined) {
+      if (!phoneInit && LocalStorageHandler.getData().phone)
+        setPhoneInit(LocalStorageHandler.getData().phone || '')
+    }
   }, [])
 
   return (

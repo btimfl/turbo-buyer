@@ -41,8 +41,11 @@ export default function AddressList() {
   })
 
   useEffect(() => {
-    const turboAddressCount = LocalStorageHandler.getData().turboAddressCount
-    setDoesTurboAddressExist(turboAddressCount ? +turboAddressCount > 0 : false)
+    if(typeof window !== undefined) {
+      LocalStorageHandler.getData()
+      const turboAddressCount = LocalStorageHandler.getData().turboAddressCount
+      setDoesTurboAddressExist(turboAddressCount ? +turboAddressCount > 0 : false)
+    }
   }, [])
 
   useEffect(() => {

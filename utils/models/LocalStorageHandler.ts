@@ -36,15 +36,17 @@ class LocalStorageHandler {
     addresses: any
     turboAddressCount: number | null
   } {
-    const turboAddressCount = localStorage?.getItem('turboAddressCount')
-
-    return {
-      phone: localStorage?.getItem('phone'),
-      verified: localStorage?.getItem('verified'),
-      addresses: JSON.parse(
-        decodeURIComponent(localStorage?.getItem('addresses') || '[]')
-      ),
-      turboAddressCount: turboAddressCount ? +turboAddressCount : null,
+    try {
+      const turboAddressCount = localStorage?.getItem('turboAddressCount')
+  
+      return {
+        phone: localStorage?.getItem('phone'),
+        verified: localStorage?.getItem('verified'),
+        addresses: JSON.parse(
+          decodeURIComponent(localStorage?.getItem('addresses') || '[]')
+        ),
+        turboAddressCount: turboAddressCount ? +turboAddressCount : null,
+      }
     }
   }
 }
