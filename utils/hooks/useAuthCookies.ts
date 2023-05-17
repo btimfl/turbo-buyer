@@ -43,6 +43,13 @@ export default function useAuthCookies(router: NextRouter) {
         if (phone && isVerified === 'true' && phone == _phone) {
           setPhone(phone)
           setAddresses(addresses)
+          LocalStorageHandler.setPhone(
+            phone,
+            turboAddressCount ? +turboAddressCount : 0
+          )
+          LocalStorageHandler.markVerified(
+            encodeURIComponent(JSON.stringify(addresses))
+          )
           router.push('/addresses')
           return
         }

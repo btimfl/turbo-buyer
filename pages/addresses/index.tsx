@@ -41,15 +41,15 @@ export default function AddressList() {
   })
 
   useEffect(() => {
-    if(typeof window !== undefined) {
-      LocalStorageHandler.getData()
+    if (typeof window !== undefined) {
       const turboAddressCount = LocalStorageHandler.getData().turboAddressCount
-      setDoesTurboAddressExist(turboAddressCount ? +turboAddressCount > 0 : false)
+      setDoesTurboAddressExist(
+        turboAddressCount ? +turboAddressCount > 0 : false
+      )
     }
   }, [])
 
   useEffect(() => {
-    debugger
     if (formik.values.selectedAddress) {
       if (
         shopifyAddresses?.length &&
