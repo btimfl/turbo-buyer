@@ -19,6 +19,7 @@ export default function useShopifyConfig() {
   }
 
   useEffect(() => {
+    // console.log("can receive post messages.")
     const handler = (message: MessageEvent) => {
       if (
         !message.data ||
@@ -29,7 +30,7 @@ export default function useShopifyConfig() {
         return
       }
 
-      console.log('Shopify Config >> ', message.data)
+      // console.log('Shopify Config >> ', message.data)
 
       if (message.data?.type === 'TURBO_INIT') {
         setConfig({
@@ -46,6 +47,9 @@ export default function useShopifyConfig() {
             message.data.shopifyUser?.logged_in_customer_id,
           cartItemsLength: message.data?.cartPayload?.item_count,
         })
+        window?.top?.postMessage({
+          type: "TURBO_BOOT"
+        }, "*");
       }
     }
 

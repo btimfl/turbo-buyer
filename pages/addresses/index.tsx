@@ -78,7 +78,7 @@ export default function AddressList() {
   }
 
   const submitAddress = () => {
-    console.log(selectedAddress)
+    // console.log(selectedAddress)
     window?.top?.postMessage(
       {
         type: 'TURBO_ROUTE',

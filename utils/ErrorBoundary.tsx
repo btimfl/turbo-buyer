@@ -32,7 +32,7 @@ class ErrorBoundary extends Component<Props, State> {
               <Text>Something went wrong</Text>
               <Text>
                 If you are using incognito mode, please disable{' '}
-                <Text fontStyle={'italic'}>Block third party cookies</Text>
+                <Text align="center" fontStyle={'italic'}>Block third party cookies</Text>
               </Text>
             </Flex>
           </Center>
