@@ -6,10 +6,10 @@ import { UserContext } from '../providers/UserProvider'
 
 export default function useAuthCookies(router: NextRouter) {
   const {
-    phone: _phone,
-    logged_in_customer_id,
-    addresses: shopifyAddresses,
-    turboAddressCount,
+    phone: fromShopifyPhone,
+    logged_in_customer_id: loggedInCustomerId,
+    addresses: fromShopifySA,
+    turboAddressCount: fromShopifyTAC,
     clientLogo,
     cartItemsLength,
   } = useContext(ShopifyConfigContext)
@@ -19,67 +19,91 @@ export default function useAuthCookies(router: NextRouter) {
     // CASE: IF TURBO_INIT HAS NOT YET BEEN CALLED
     if (clientLogo === null) return
 
+    // CASE: IF CART IS EMPTY
     if (cartItemsLength === 0) {
       router.push('/empty')
       return
     }
 
-    const {
-      phone,
-      verified: isVerified,
-      addresses,
-    } = LocalStorageHandler.getData()
-
-    // CASE: SHOPIFY USER
-    if (logged_in_customer_id) {
-      const doesPhoneNumberExist = Boolean(_phone)
-      const doesShopifyAddressExist = shopifyAddresses?.length
-      const doesTurboAddressExist = turboAddressCount && +turboAddressCount > 0
-
-      LocalStorageHandler.resetSession()
-
-      if (doesPhoneNumberExist) {
-        // CASE: IF SHOPIFY USER HAS VERIFIED HIS PHONE NUMBER ONCE
-        if (phone && isVerified === 'true' && phone == _phone) {
-          setPhone(phone)
-          setAddresses(addresses)
-          LocalStorageHandler.setPhone(
-            phone,
-            turboAddressCount ? +turboAddressCount : 0
-          )
-          LocalStorageHandler.markVerified(
-            encodeURIComponent(JSON.stringify(addresses))
-          )
-          router.push('/addresses')
-          return
-        }
-
-        setPhone(_phone)
-        LocalStorageHandler.setPhone(_phone!, +turboAddressCount!)
-        if (doesTurboAddressExist) router.push('/profile')
-        else {
-          LocalStorageHandler.markVerified([])
-          router.push('/addresses')
-        }
-      } else {
-        if (doesShopifyAddressExist) router.push('/addresses')
-        else router.push('/profile')
-      }
-
-      return
-    }
-
-    // CASE: IF USER HAS VERIFIED HIMSELF
-    if (phone && isVerified === 'true') {
-      setPhone(phone)
-      setAddresses(addresses)
-      router.push('/addresses')
-      return
-    }
-
-    // IF GUEST USER IS USING TURBO FOR THE FIRST TIME
-    setPhone(phone || null)
-    setAddresses([])
-    router.push('/profile')
+    if (loggedInCustomerId)
+      handleShopifyUser(
+        fromShopifyPhone,
+        fromShopifySA,
+        fromShopifyTAC,
+        setPhone,
+        setAddresses,
+        router
+      )
+    else handleGuestUser(setPhone, setAddresses, router)
   }, [clientLogo, cartItemsLength])
+}
+
+function handleShopifyUser(
+  fromShopifyPhone: string | null,
+  fromShopifySA: any[],
+  fromShopifyTAC: number | null,
+  inAppSetPhone: Function,
+  inAppSetTA: Function,
+  router: NextRouter
+) {
+  // This block is only executed if there is a shopify user logged in.
+  // When that happens, the phone number, addresses, TAC, etc. are set from the Shopify Config received,
+  // And as such, must be treated as the source of truth over data stored in local
+  const {
+    phone: inLocalPhone,
+    verified: inLocalVerified,
+    addresses: inLocalTA,
+  } = LocalStorageHandler.getData()
+
+  if (Boolean(fromShopifyPhone)) {
+    // If the user has logged in for turbo using the same number as is in his Shopify account
+    if (fromShopifyPhone == inLocalPhone && inLocalVerified === 'true') {
+      inAppSetPhone(inLocalPhone)
+      inAppSetTA(inLocalTA)
+      LocalStorageHandler.setPhone(
+        inLocalPhone!,
+        fromShopifyTAC ? +fromShopifyTAC : 0
+      )
+      LocalStorageHandler.markVerified(
+        encodeURIComponent(JSON.stringify(inLocalTA))
+      ) // --> seems redundant
+      router.push('/addresses')
+    } else {
+      inAppSetPhone(fromShopifyPhone)
+      LocalStorageHandler.setPhone(
+        fromShopifyPhone!,
+        fromShopifyTAC ? +fromShopifyTAC : 0
+      )
+      if (fromShopifyTAC && +fromShopifyTAC > 0) router.push('/profile')
+      else {
+        LocalStorageHandler.markVerified([])
+        router.push('/addresses')
+      }
+    }
+  } else {
+    if (fromShopifySA?.length) router.push('/addresses')
+    else router.push('/profile')
+  }
+}
+
+function handleGuestUser(
+  inAppSetPhone: Function,
+  inAppSetTA: Function,
+  router: NextRouter
+) {
+  const {
+    phone: inLocalPhone,
+    verified: inLocalVerified,
+    addresses: inLocalTA,
+  } = LocalStorageHandler.getData()
+
+  if (inLocalPhone && inLocalVerified === 'true') {
+    inAppSetPhone(inLocalPhone)
+    inAppSetTA(inLocalTA)
+    router.push('/addresses')
+  } else {
+    inAppSetPhone(inLocalPhone || null)
+    inAppSetTA([])
+    router.push('/profile')
+  }
 }
