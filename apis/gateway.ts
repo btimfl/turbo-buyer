@@ -7,6 +7,18 @@ export default async function gateway(key: string): Promise<any> {
         message.data?.type === 'TURBO_CALLBACK' &&
         message.data?.key === key
       ) {
+        if (message.data?.apiResponse.ok === false) {
+          window?.top?.postMessage(
+            {
+              type: 'TURBO_ROUTE',
+              address: JSON.stringify({
+                mobile: '',
+              }),
+            },
+            '*'
+          )
+          return
+        }
         res(message.data?.apiResponse)
       }
     }
