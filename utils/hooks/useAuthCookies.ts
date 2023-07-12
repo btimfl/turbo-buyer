@@ -69,18 +69,21 @@ function handleShopifyUser(
       ) // --> seems redundant
       router.push('/addresses')
     } else {
+      LocalStorageHandler.resetSession()
       inAppSetPhone(fromShopifyPhone)
       LocalStorageHandler.setPhone(
         fromShopifyPhone!,
         fromShopifyTAC ? +fromShopifyTAC : 0
       )
-      if (fromShopifyTAC && +fromShopifyTAC > 0) router.push('/profile')
-      else {
-        LocalStorageHandler.markVerified([])
-        router.push('/addresses')
+      if (!fromShopifyTAC) LocalStorageHandler.markVerified([])
+      else if (!fromShopifySA || !fromShopifySA.length) {
+        router.push('/profile')
+        return
       }
+      router.push('/addresses')
     }
   } else {
+    LocalStorageHandler.resetSession()
     if (fromShopifySA?.length) router.push('/addresses')
     else router.push('/profile')
   }

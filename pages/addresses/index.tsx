@@ -26,11 +26,7 @@ export default function AddressList() {
   const { addresses: shopifyAddresses } = useContext(ShopifyConfigContext)
 
   const [selectedAddress, setSelectedAddress] = useState<any>(null)
-  const [doesTurboAddressExist, setDoesTurboAddressExist] =
-    useState<boolean>(false)
-  const [isTurboAddressVisible, setIsTurboAddressVisible] = useState<boolean>(
-    !(shopifyAddresses?.length > 0)
-  )
+  const [showLoadMore, setShowLoadMore] = useState<boolean>(false)
 
   const router = useRouter()
   const formik = useFormik({
@@ -41,12 +37,10 @@ export default function AddressList() {
   })
 
   useEffect(() => {
-    if (typeof window !== undefined) {
-      const turboAddressCount = LocalStorageHandler.getData().turboAddressCount
-      setDoesTurboAddressExist(
-        turboAddressCount ? +turboAddressCount > 0 : false
-      )
-    }
+    const { turboAddressCount } = LocalStorageHandler.getData()
+    if (turboAddressCount && +turboAddressCount > 0 && !addresses)
+      setShowLoadMore(true)
+    else setShowLoadMore(false)
   }, [])
 
   useEffect(() => {
@@ -213,54 +207,52 @@ export default function AddressList() {
                     )
                   })
                 : null}
-              {isTurboAddressVisible
-                ? addresses?.map((address, index) => {
-                    return (
-                      <Box
-                        mb={2}
+              {addresses?.map((address, index) => {
+                return (
+                  <Box
+                    mb={2}
+                    key={index}
+                    p={4}
+                    className={`${styles.card} ${
+                      address.address_id === formik.values.selectedAddress
+                        ? styles.selectedCard
+                        : ''
+                    }`}
+                  >
+                    <Radio
+                      colorScheme='green'
+                      {...formik.getFieldProps('selectedAddress')}
+                      value={(
+                        index + (shopifyAddresses?.length ?? 0)
+                      ).toString()}
+                      className={`${styles.radio}`}
+                    >
+                      <AddressCard
                         key={index}
-                        p={4}
-                        className={`${styles.card} ${
-                          address.address_id === formik.values.selectedAddress
-                            ? styles.selectedCard
-                            : ''
-                        }`}
-                      >
-                        <Radio
-                          colorScheme='green'
-                          {...formik.getFieldProps('selectedAddress')}
-                          value={(
-                            index + (shopifyAddresses?.length ?? 0)
-                          ).toString()}
-                          className={`${styles.radio}`}
-                        >
-                          <AddressCard
-                            key={index}
-                            index={index}
-                            isInForm={true}
-                            address={address}
-                            mobile={address.mobile}
-                            selected={
-                              index + (shopifyAddresses?.length ?? 0) ===
-                              +formik.values.selectedAddress
-                            }
-                          />
-                        </Radio>
-                      </Box>
-                    )
-                  })
-                : null}
+                        index={index}
+                        isInForm={true}
+                        address={address}
+                        mobile={address.mobile}
+                        selected={
+                          index + (shopifyAddresses?.length ?? 0) ===
+                          +formik.values.selectedAddress
+                        }
+                      />
+                    </Radio>
+                  </Box>
+                )
+              })}
             </RadioGroup>
           </form>
 
-          {doesTurboAddressExist && !isTurboAddressVisible ? (
+          {showLoadMore ? (
             <Flex
               alignItems='center'
               gap={1}
               color={'var(--turbo-colors-link)'}
               cursor='pointer'
               onClick={() => {
-                setIsTurboAddressVisible(true)
+                router.push('/profile')
               }}
             >
               <FaChevronDown />
